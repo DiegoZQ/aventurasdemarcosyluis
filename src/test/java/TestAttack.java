@@ -80,4 +80,4 @@ public class TestAttack {
         testSpiny.attack(testMarcos,EnemyAttackType.BASICATTACK);
         assert testMarcos.getHp()<testMarcos.getHpMax();
     }
-}//214
+}

@@ -32,7 +32,7 @@ public enum EnemyType {
      * A defense-focused enemy and immune to player attack type SALTO
      * because of the spikes in its shell.
      */
-    SPINY(6,6,2,1) {
+    SPINY(6,2,2,1) {
         /**
          * Checks if the Player attack type is valid to attack Spiny.
          *
