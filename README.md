@@ -20,7 +20,7 @@ el nivel y estadísticas que tendrá el siguiente enemigo
 generado. Finalmente tenemos otra clase, independiente
 de las últimas tres mencionadas, AttackTable usada para definir dos
 matrices booleanas constantes y estáticas, que son
-utilizadas para determinar si cierto tipo de Player puede
+utilizadas para determinar si un cierto tipo de Player puede
 atacar a cierto tipo de Enemy y viceversa.
 
 La carpeta items contiene una superclase abstracta denominada
