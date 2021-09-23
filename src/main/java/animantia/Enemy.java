@@ -1,5 +1,6 @@
 package animantia;
 
+
 import types.EnemyAttackType;
 import types.EnemyType;
 import java.util.concurrent.ThreadLocalRandom;
