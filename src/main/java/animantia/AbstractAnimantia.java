@@ -3,12 +3,12 @@ package animantia;
 /**
  * Animantia from Latin "living things" is the name of abstract class, superclass of every class
  * that creates living things with properties like having attack (ATK), defense (DEF), hit points (HP),
- * max hit points (HP_MAX), level (LVL) and an Animantia type (not specified in this class). Plus it also
+ * max hit points (HP_MAX), level (LVL) and a type (not set in this class). Plus it also
  * includes methods to interact with others living things, methods like canAttack or attack.
  *
  * @param <T> anonymous class for attacked.
  * @param <R> anonymous class for attack type.
- * @param <Q> anonymous class for Animantia type (specified in the final subclasses).
+ * @param <Q> anonymous class for  Type (set in the final subclasses Player/Enemy).
  * @author Diego Zuniga.
  */
 public abstract class AbstractAnimantia<T, R, Q> {
@@ -135,7 +135,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
         this.type = type;
     }
     /**
-     * Checks if it's Knockout.
+     * Checks if it's Knock out.
      *
      * @return true if its hit points are equal to zero;
      *         false otherwise.

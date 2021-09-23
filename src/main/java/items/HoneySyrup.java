@@ -13,10 +13,10 @@ public final class HoneySyrup extends AbstractItem {
         super();
     }
     /**
-     * Increases the player's FP by 3, or up to his maximum FP
-     * if the player's FP is three points or fewer of his maximum FP.
+     * Increases the Player's FP by 3, or up to his maximum FP
+     * if the Player's FP is three points or fewer of his maximum FP.
      *
-     * @param aPlayer who gets FP.
+     * @param aPlayer Player who gets FP.
      */
     @Override
     public void giveEffect(Player aPlayer) {

@@ -6,7 +6,7 @@ import static types.PlayerAttackType.SALTO;
 
 /**
  * Enemy types, their base stats (stats at level 1), indexes in Attack Table and their particularities
- * when they're attacked with different Player attack types.
+ * when they're attacked with different Player Attack Types.
  *
  * @author Diego Zuniga.
  */
@@ -19,7 +19,7 @@ public enum EnemyType {
         /**
          * Gets the resulting damage from attacking Goomba with a specific attack.
          *
-         * @param aPlayer who attacks him.
+         * @param aPlayer Player who attacks him.
          * @param anAttack Player attack type that a Player performs.
          * @return the resulting raw damage towards the enemy without the enemy defense applied in attack formula.
          */
@@ -48,7 +48,7 @@ public enum EnemyType {
          * else, the Player gets its hit points lowered by 5% of him maximum hit points and the resulting damage to
          * Spiny is zero.
          *
-         * @param aPlayer who attacks him.
+         * @param aPlayer Player who attacks him.
          * @param anAttack Player attack type that a Player performs.
          * @return the resulting raw damage towards the enemy without the enemy defense applied in attack formula.
          */
@@ -82,7 +82,7 @@ public enum EnemyType {
          * Checks if Boo is attackable with the Player attack type. If he is, then returns the resulting damage;
          * else, returns zero.
          *
-         * @param aPlayer who attacks him.
+         * @param aPlayer Player who attacks him.
          * @param anAttack Player attack type that a Player performs.
          * @return the resulting raw damage towards the enemy without the enemy defense applied in attack formula.
          */

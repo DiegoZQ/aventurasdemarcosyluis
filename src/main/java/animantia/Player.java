@@ -8,9 +8,9 @@ import static animantia.AttackTable.PlayerAttackTable;
 
 /**
  * Player is the class creator of every playable creatures controlled by a user. It was created
- * to make the user the protagonist of the game. It has implemented methods to attack Enemies, level up, use items
+ * to make the user the protagonist of the game. It has implemented methods to attack Enemies, level up, use items,
  * and a shared inventory between the Players to get and use those Items in battle against Enemies. It also
- * has new variables like {@link #fp}, fp max, {@link #exp}, {@link #invincible} and some cheats used to make tests.
+ * has new fields like {@link #fp}, fp max, {@link #exp}, {@link #invincible} and some cheats used to make tests.
  *
  * @author Diego Zuniga.
  */
@@ -58,7 +58,8 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
     }
     /**
      * Creates a new Player using an PlayerType to set its base stats in the constructor
-     * {@link #Player(int, int, int, int, int)}. It also sets the fpMax and level equal to 1.
+     * {@link #Player(int, int, int, int, int)}. It also sets the fpMax and level equal to 4 and 1
+     * respectively.
      *
      * @param aPlayer Player type.
      */
@@ -102,7 +103,7 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
     /**
      * Sets the boolean value of {@link #invincible}.
      *
-     * @param aBool true to activate; false to deactivate.
+     * @param aBool true to activate; false to desactivate.
      */
     public void setInvincible(boolean aBool){
         this.invincible=aBool;
@@ -110,7 +111,7 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
     /**
      * Sets the boolean value of {@link #perfectPrecision}.
      *
-     * @param aBool true to activate; false to deactivate.
+     * @param aBool true to activate; false to desactivate.
      */
     public void setPerfectPrecision(boolean aBool){
         this.perfectPrecision=aBool;
@@ -118,7 +119,7 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
     /**
      * Sets the boolean value of {@link #infiniteEnergy}.
      *
-     * @param aBool true to activate; false to deactivate.
+     * @param aBool true to activate; false to desactivate.
      */
     public void setInfiniteEnergy(boolean aBool){
         this.infiniteEnergy=aBool;
