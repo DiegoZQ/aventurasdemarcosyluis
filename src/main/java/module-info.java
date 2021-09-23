@@ -3,6 +3,6 @@ module com.example.aventurasdemarcoyluis {
     requires javafx.fxml;
 
 
-    opens com.example.aventurasdemarcoyluis to javafx.fxml;
-    exports com.example.aventurasdemarcoyluis;
+    opens animantia to javafx.fxml;
+    exports animantia;
 }
