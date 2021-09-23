@@ -13,10 +13,10 @@ public final class RedMushroom extends AbstractItem {
         super();
     }
     /**
-     * Increases the player's hit points by 10% of his maximum hit points, or up to his
-     * maximum hp if the player's hp is above 90% of its maximum hp.
+     * Increases the Player's hit points by 10% of his maximum hit points, or up to his
+     * maximum hp if the Player's hp is above 90% of its maximum hp.
      *
-     * @param aPlayer who gets healed.
+     * @param aPlayer Player who gets healed.
      */
     @Override
     public void giveEffect(Player aPlayer) {

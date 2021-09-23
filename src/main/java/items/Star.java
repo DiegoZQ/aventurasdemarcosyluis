@@ -14,9 +14,9 @@ public final class Star extends AbstractItem {
         super();
     }
     /**
-     * Makes a player invencible.
+     * Makes a Player invencible.
      *
-     * @param aPlayer who gets invencible.
+     * @param aPlayer Player who gets invencible.
      */
     @Override
     public void giveEffect(Player aPlayer){

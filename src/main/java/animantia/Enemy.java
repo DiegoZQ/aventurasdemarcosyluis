@@ -1,5 +1,6 @@
 package animantia;
 
+
 import types.EnemyAttackType;
 import types.EnemyType;
 import java.util.concurrent.ThreadLocalRandom;
@@ -7,7 +8,7 @@ import static animantia.AttackTable.EnemyAttackTable;
 
 /**
  * Enemy is the class creator of every hostile creatures controlled by PC. It was created
- * to be an obstacle for the players. It has implemented methods to attack Players, and variables (like
+ * to be an obstacle for the players. It has implemented methods to attack Players, and fields (like
  *  difficulty and power) to increase the hardness of the following enemies created each time
  *  an Enemy is knocked out.
  *
@@ -56,7 +57,6 @@ public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, Enem
     public static double getDifficulty(){
         return Enemy.difficulty;
     }
-
     /**
      * Sets the {@link #difficulty}.
      *

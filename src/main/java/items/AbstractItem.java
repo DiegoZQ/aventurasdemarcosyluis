@@ -6,7 +6,7 @@ import animantia.Player;
  * AbstractItem is an Abstract class, superclass of every usable item in Players inventory.
  * It determines the methods and variables that any item must have; Methods like consume or
  * giveEffect when an object from this class is used. It also has a {@link #quantity}
- * variable.
+ * field.
  *
  * @author Diego Zuniga.
  */

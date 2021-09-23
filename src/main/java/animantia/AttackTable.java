@@ -20,11 +20,11 @@ public class AttackTable {
      * can attack a specific Enemy located in the j-column.
      */
     public static final boolean[][] PlayerAttackTable = { {true, true, true},
-            {true, true, false} };
+                                                          {true, true, false} };
     /**
      * Matrix in which each boolean value i,j determines if a specific Enemy located in the j-column
-     * can attack a specific Player located in the i-column.
+     * can attack a specific Player located in the i-row.
      */
     public static final boolean[][] EnemyAttackTable = { {true, true, false},
-            {true, true, true} };
+                                                         {true, true, true} };
 }
