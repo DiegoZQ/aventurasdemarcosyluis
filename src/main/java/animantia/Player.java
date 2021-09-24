@@ -1,5 +1,6 @@
 package animantia;
 
+import types.EnemyAttackType;
 import types.PlayerAttackType;
 import items.*;
 import types.PlayerType;
@@ -14,8 +15,8 @@ import static animantia.AttackTable.PlayerAttackTable;
  *
  * @author Diego Zuniga.
  */
-public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, PlayerType> implements Levelable {
-    private int fpMax;
+public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType, Enemy> implements Levelable {
+    private final int fpMax;
     /**
      * Int value needed to perform an attack with a Player.
      */
@@ -156,6 +157,17 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
         return anAttack.getAccuracy() >= rand;
     }
     /**
+     * Gets the raw damage from an attack, which is the damage without the attacked defense
+     * applied in the attack formula.
+     *
+     * @param anAttack Attack chosen from all possible attacks that the Player can do.
+     * @return Raw damage.
+     */
+    @Override
+    public double getRawDamage(PlayerAttackType anAttack){
+        return anAttack.getK()*this.getAtk()*this.getLvl();
+    }
+    /**
      * Checks if the Player and the Enemy aren't Knocked out to perform the attack.
      * It also checks in the PlayerAttackTable if the Player type is allowed to attack
      * the Enemy type.
@@ -166,8 +178,8 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
      */
     @Override
     public boolean canAttack(Enemy anEnemy){
-        boolean a = PlayerAttackTable[this.getType().getIndex()][anEnemy.getType().getIndex()];
-        return !this.isKO() && !anEnemy.isKO() && a;
+        boolean isAttackable = PlayerAttackTable[this.getType().getIndex()][anEnemy.getType().getIndex()];
+        return !this.isKO() && !anEnemy.isKO() && isAttackable;
     }
     /**
      * Attacks an Enemy lowering his hit points using a specific attack when {@link #canAttack} is true and
@@ -180,19 +192,17 @@ public final class Player extends AbstractAnimantia<Enemy, PlayerAttackType, Pla
      */
     @Override
     public void attack(Enemy anEnemy, PlayerAttackType anAttack){
-        if (this.canAttack(anEnemy) && this.fp>=anAttack.getEnergy()){
+        if (this.canAttack(anEnemy) && this.getFp()>=anAttack.getEnergy()){
             if (this.hit(anAttack) || this.perfectPrecision){
-                double damage = anEnemy.getType().beAttackedBy(this, anAttack);
-                int reducedDamage = (int)(damage/anEnemy.getDef());
-                reducedDamage = Math.min(reducedDamage, anEnemy.getHp());
-                anEnemy.setHp(anEnemy.getHp()-reducedDamage);
+                int damage = (int)(anEnemy.getType().beAttackedBy(this, anAttack)/anEnemy.getDef());
+                damage = Math.min(damage, anEnemy.getHp());
+                anEnemy.setHp(anEnemy.getHp()-damage);
                 if (anEnemy.isKO()){
                     this.exp++;
-                    Enemy.setDifficulty(Enemy.getDifficulty()+0.5);
                 }
             }
             if (!this.infiniteEnergy){
-                this.fp -= anAttack.getEnergy();
+                this.setFp(this.getFp()-anAttack.getEnergy());
             }
         }
     }

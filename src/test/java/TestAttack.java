@@ -37,14 +37,6 @@ public class TestAttack {
         assertEquals(testGoomba.getHp(),testGoomba.getHpMax());
     }
     @Test
-    public void KnockOutEnemiesCantAttackTest(){
-        while (!testGoomba.isKO()){
-            testLuis.attack(testGoomba,PlayerAttackType.SALTO);
-        }
-        testGoomba.attack(testLuis,EnemyAttackType.BASICATTACK);
-        assertEquals(testLuis.getHp(),testLuis.getHpMax());
-    }
-    @Test
     public void PlayerJumpAttack() {
         testMarcos.attack(testGoomba, PlayerAttackType.SALTO);
         assert testGoomba.getHp()<testGoomba.getHpMax();
