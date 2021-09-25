@@ -3,13 +3,13 @@ package animantia;
 /**
  * This interface gives an object the quality of being levelable, which means it can
  * improve its stats using exp and get powerful. It shouldn't be implemented to a class without
- * variables that can be improved or without an exp system.
+ * fields that can be improved or without an exp system.
  *
  * @author Diego Zuniga.
  */
 public interface Levelable {
     /**
-     * Increases every base stat of the Object and sets them to its maximum.
+     * Increases every base stat of the Object and sets them to its maximum available.
      */
     void levelUp();
     /**

@@ -1,17 +1,19 @@
 package animantia;
 
+import types.PlayerAttackType;
+
 /**
  * Animantia from Latin "living things" is the name of abstract class, superclass of every class
  * that creates living things with properties like having attack (ATK), defense (DEF), hit points (HP),
  * max hit points (HP_MAX), level (LVL) and a type (not set in this class). Plus it also
  * includes methods to interact with others living things, methods like canAttack or attack.
  *
- * @param <T> anonymous class for attacked.
+ * @param <Q> anonymous class for Type (set in the final subclasses Player/Enemy).
  * @param <R> anonymous class for attack type.
- * @param <Q> anonymous class for  Type (set in the final subclasses Player/Enemy).
+ * @param <T> anonymous class for attacked.
  * @author Diego Zuniga.
  */
-public abstract class AbstractAnimantia<T, R, Q> {
+public abstract class AbstractAnimantia<Q, R, T> {
     private int atk;
     private int def;
     private int hpMax;
@@ -43,7 +45,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @return the attack.
      */
-    public int getAtk(){
+    protected int getAtk(){
         return this.atk;
     }
     /**
@@ -51,7 +53,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @param ATK attack to set.
      */
-    public void setAtk(int ATK){
+    protected void setAtk(int ATK){
         this.atk = ATK;
     }
     /**
@@ -59,7 +61,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @return the defense.
      */
-    public int getDef(){
+    protected int getDef(){
         return this.def;
     }
     /**
@@ -67,7 +69,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @param DEF defense to set.
      */
-    public void setDef(int DEF){
+    protected void setDef(int DEF){
         this.def = DEF;
     }
     /**
@@ -83,7 +85,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @param HP_MAX maximum hit points to set.
      */
-    public void setHpMax(int HP_MAX){
+    protected void setHpMax(int HP_MAX){
         this.hpMax = HP_MAX;
     }
     /**
@@ -115,7 +117,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @param LVL level.
      */
-    public void setLvl(int LVL){
+    protected void setLvl(int LVL){
         this.lvl = LVL;
     }
     /**
@@ -123,7 +125,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @return the type.
      */
-    public Q getType(){
+    protected Q getType(){
         return this.type;
     }
     /**
@@ -131,7 +133,7 @@ public abstract class AbstractAnimantia<T, R, Q> {
      *
      * @param type a type.
      */
-    public void setType(Q type){
+    protected void setType(Q type){
         this.type = type;
     }
     /**
@@ -150,12 +152,20 @@ public abstract class AbstractAnimantia<T, R, Q> {
      * @return true if all the requirements are meet;
      *         false otherwise.
      */
-    public abstract boolean canAttack(T anAnimantia);
+    protected abstract boolean canAttack(T anAnimantia);
     /**
      * Attacks an Animantia lowering his hit points using a specific attack.
      *
      * @param anAnimantia Animantia who gets its hit point lowered.
      * @param anAttack Attack chosen from all possible attacks that the Animantia can do.
      */
-    public abstract void attack(T anAnimantia, R anAttack);
+    protected abstract void attack(T anAnimantia, R anAttack);
+    /**
+     * Gets the raw damage from an attack, which is the damage without the attacked defense
+     * applied in the attack formula.
+     *
+     * @param anAttack Attack chosen from all possible attacks that the Animantia can do.
+     * @return Raw Damage.
+     */
+    protected abstract double getRawDamage(R anAttack);
 }

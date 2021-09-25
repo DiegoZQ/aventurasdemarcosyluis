@@ -3,7 +3,7 @@ package animantia;
 /**
  * AttackTable is a class used only to define two public statics constants matrices filled with
  * boolean values, the rows represent the Players and the columns represent the Enemies. Each
- * Player/Enemy type has one unique index defined in PlayerType/EnemyType, and it's index
+ * Player/Enemy types has one unique index defined in PlayerType/EnemyType, and it's index
  * combination in the matrices are used to determine if a specific Player/Enemy can attack
  * a specific Enemy/Player.
  *

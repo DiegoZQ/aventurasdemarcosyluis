@@ -25,7 +25,7 @@ public enum EnemyType {
          */
         @Override
         public double beAttackedBy(Player aPlayer, PlayerAttackType anAttack) {
-            return anAttack.getK()*aPlayer.getAtk()*aPlayer.getLvl();
+            return aPlayer.getRawDamage(anAttack);
         }
     },
     /**
@@ -55,7 +55,7 @@ public enum EnemyType {
         @Override
         public double beAttackedBy(Player aPlayer, PlayerAttackType anAttack){
             if (isAttackableWith(anAttack)){
-                return anAttack.getK()*aPlayer.getAtk()*aPlayer.getLvl();
+                return aPlayer.getRawDamage(anAttack);
             }
             double damage = -aPlayer.getHpMax()*0.1*(anAttack.getK()-1.5);
             damage = Math.min(damage,aPlayer.getHp());
@@ -89,7 +89,7 @@ public enum EnemyType {
         @Override
         public double beAttackedBy(Player aPlayer, PlayerAttackType anAttack){
             if (isAttackableWith(anAttack)){
-                return anAttack.getK()*aPlayer.getAtk()*aPlayer.getLvl();
+                return aPlayer.getRawDamage(anAttack);
             }
             return 0;
         }
@@ -162,7 +162,7 @@ public enum EnemyType {
      * If the Player attack type isn't correct, the resulting damage is 0 and the Player
      * gets penalized (or not).
      *
-     * @param aPlayer who attacks him.
+     * @param aPlayer Player who attacks him.
      * @param anAttack Player attack type that a Player performs.
      * @return the resulting damage towards the enemy without the enemy defense applied in attack formula.
      */

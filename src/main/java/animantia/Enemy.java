@@ -14,7 +14,7 @@ import static animantia.AttackTable.EnemyAttackTable;
  *
  * @author Diego Zuniga.
  */
-public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, EnemyType>  {
+public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, Player>  {
     /**
      * A static double value used to set the upper bound of the next enemy stats.
      */
@@ -54,7 +54,7 @@ public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, Enem
      *
      * @return the difficulty.
      */
-    public static double getDifficulty(){
+    private static double getDifficulty(){
         return Enemy.difficulty;
     }
     /**
@@ -62,16 +62,41 @@ public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, Enem
      *
      * @param difficulty to set.
      */
-    public static void setDifficulty(double difficulty){
+    private static void setDifficulty(double difficulty){
         Enemy.difficulty = difficulty;
     }
     /**
-     * Sets the power.
+     * Sets the {@link #power}.
      *
      * @param power to set.
      */
     public static void setPower(int power){
         Enemy.power = power;
+    }
+    /**
+     * Checks if it's Knock out.
+     * If it is, increases the difficulty by 0.5.
+     *
+     * @return true if its hit points are equal to zero;
+     *         false otherwise.
+     */
+    @Override
+    public boolean isKO(){
+        if (super.isKO()){
+            setDifficulty(getDifficulty()+0.5);
+        }
+        return  super.isKO();
+    }
+    /**
+     * Gets the raw damage from an attack, which is the damage without the attacked defense
+     * applied in the attack formula.
+     *
+     * @param anAttack Attack chosen from all possible attacks that the Enemy can do.
+     * @return Raw damage.
+     */
+    @Override
+    public double getRawDamage(EnemyAttackType anAttack){
+        return anAttack.getK()*this.getAtk()*this.getLvl();
     }
     /**
      * Checks if the Enemy and the Player aren't Knocked out to perform the attack.
@@ -84,8 +109,8 @@ public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, Enem
      */
     @Override
     public boolean canAttack(Player aPlayer){
-        boolean a = EnemyAttackTable[aPlayer.getType().getIndex()][this.getType().getIndex()];
-        return !this.isKO() && !aPlayer.isKO() && a;
+        boolean isAttackable = EnemyAttackTable[aPlayer.getType().getIndex()][this.getType().getIndex()];
+        return !this.isKO() && !aPlayer.isKO() && isAttackable;
     }
     /**
      * Attacks a Player lowering his hit points using a specific attack when {@link #canAttack} is true.
@@ -97,7 +122,7 @@ public final class Enemy extends AbstractAnimantia<Player, EnemyAttackType, Enem
     @Override
     public void attack(Player aPlayer, EnemyAttackType anAttack){
         if (canAttack(aPlayer)){
-            int damage = (int)(anAttack.getK()*this.getAtk()*this.getLvl()/(double)aPlayer.getDef());
+            int damage = (int)(this.getRawDamage(anAttack)/aPlayer.getDef());
             if (aPlayer.isInvincible()){
                 damage = 0;
             }
