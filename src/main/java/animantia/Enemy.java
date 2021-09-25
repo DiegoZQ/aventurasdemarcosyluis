@@ -85,7 +85,7 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
         if (super.isKO()){
             setDifficulty(getDifficulty()+0.5);
         }
-        return  super.isKO();
+        return super.isKO();
     }
     /**
      * Gets the raw damage from an attack, which is the damage without the attacked defense
@@ -95,7 +95,7 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
      * @return Raw damage.
      */
     @Override
-    public double getRawDamage(EnemyAttackType anAttack){
+    protected double getRawDamage(EnemyAttackType anAttack){
         return anAttack.getK()*this.getAtk()*this.getLvl();
     }
     /**
@@ -108,7 +108,7 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
      *         false otherwise.
      */
     @Override
-    public boolean canAttack(Player aPlayer){
+    protected boolean canAttack(Player aPlayer){
         boolean isAttackable = EnemyAttackTable[aPlayer.getType().getIndex()][this.getType().getIndex()];
         return !this.isKO() && !aPlayer.isKO() && isAttackable;
     }
@@ -123,10 +123,6 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
     public void attack(Player aPlayer, EnemyAttackType anAttack){
         if (canAttack(aPlayer)){
             int damage = (int)(this.getRawDamage(anAttack)/aPlayer.getDef());
-            if (aPlayer.isInvincible()){
-                damage = 0;
-            }
-            damage = Math.min(damage,aPlayer.getHp());
             aPlayer.setHp(aPlayer.getHp()-damage);
         }
     }

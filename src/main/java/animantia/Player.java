@@ -85,12 +85,13 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
         return this.fp;
     }
     /**
-     * Sets the {@link #fp}.
+     * Sets the {@link #fp} with the restriction than
+     * fp setter can't be higher than fpMax.
      *
      * @param FP fight points.
      */
     public void setFp(int FP){
-        this.fp = FP;
+        this.fp = Math.min(FP, this.getFpMax());
     }
     /**
      * Checks if the player is {@link #invincible}.
@@ -98,7 +99,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @return true if the player is invincible;
      *         false otherwise.
      */
-    public boolean isInvincible(){
+    private boolean isInvincible(){
         return this.invincible;
     }
     /**
@@ -124,6 +125,18 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      */
     public void setInfiniteEnergy(boolean aBool){
         this.infiniteEnergy=aBool;
+    }
+    /**
+     * Sets hit points to Player except when Player is invincible
+     * and HP to set is lower than Player actual HP.
+     *
+     * @param HP hit points.
+     */
+    @Override
+    public void setHp(int HP){
+        if (!isInvincible() || this.getHp()<HP){
+            super.setHp(HP);
+        }
     }
     public void levelUp(){
         this.setAtk((int)(this.getAtk()*(1+1/(double)getLvl())));
@@ -177,7 +190,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      *         false otherwise.
      */
     @Override
-    public boolean canAttack(Enemy anEnemy){
+    protected boolean canAttack(Enemy anEnemy){
         boolean isAttackable = PlayerAttackTable[this.getType().getIndex()][anEnemy.getType().getIndex()];
         return !this.isKO() && !anEnemy.isKO() && isAttackable;
     }
@@ -195,7 +208,6 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
         if (this.canAttack(anEnemy) && this.getFp()>=anAttack.getEnergy()){
             if (this.hit(anAttack) || this.perfectPrecision){
                 int damage = (int)(anEnemy.getType().beAttackedBy(this, anAttack)/anEnemy.getDef());
-                damage = Math.min(damage, anEnemy.getHp());
                 anEnemy.setHp(anEnemy.getHp()-damage);
                 if (anEnemy.isKO()){
                     this.exp++;

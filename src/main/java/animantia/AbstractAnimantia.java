@@ -97,12 +97,16 @@ public abstract class AbstractAnimantia<Q, R, T> {
         return this.hp;
     }
     /**
-     * Sets the hit points.
+     * Sets the hit points with the restriction than
+     * hp setter can't be lower than zero or higher than hpMax.
      *
      * @param HP hit points.
      */
     public void setHp(int HP){
-        this.hp = HP;
+        if (HP<0){
+            this.hp = 0;
+        }
+        else this.hp = Math.min(HP, this.getHpMax());
     }
     /**
      * Gets the level.
