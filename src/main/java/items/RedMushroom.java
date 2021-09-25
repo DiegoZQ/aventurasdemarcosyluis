@@ -21,7 +21,6 @@ public final class RedMushroom extends AbstractItem {
     @Override
     public void giveEffect(Player aPlayer) {
         int health = (int)(aPlayer.getHp()+aPlayer.getHpMax()*0.1);
-        health = Math.min(health, aPlayer.getHpMax());
         aPlayer.setHp(health);
     }
 }

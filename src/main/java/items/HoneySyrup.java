@@ -21,7 +21,6 @@ public final class HoneySyrup extends AbstractItem {
     @Override
     public void giveEffect(Player aPlayer) {
         int energy = aPlayer.getFp()+3;
-        energy = Math.min(energy, aPlayer.getFpMax());
         aPlayer.setFp(energy);
     }
 }
