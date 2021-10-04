@@ -45,7 +45,7 @@ public enum PlayerAttackType {
      * @return the constant k.
      */
     public double getK(){
-        return this.k;
+        return k;
     }
     /**
      * Gets the {@link #energy}.
@@ -53,7 +53,7 @@ public enum PlayerAttackType {
      * @return the energy cost.
      */
     public int getEnergy(){
-        return this.energy;
+        return energy;
     }
     /**
      * Gets the {@link #k}.
@@ -61,6 +61,6 @@ public enum PlayerAttackType {
      * @return the accuracy to hit the target.
      */
     public double  getAccuracy(){
-        return this.accuracy;
+        return accuracy;
     }
 }

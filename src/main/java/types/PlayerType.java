@@ -52,7 +52,7 @@ public enum PlayerType {
      * @return the baseAtk.
      */
     public int getBaseAtk(){
-        return this.baseAtk;
+        return baseAtk;
     }
     /**
      * Gets the {@link #baseDef}.
@@ -60,7 +60,7 @@ public enum PlayerType {
      * @return the baseDef.
      */
     public int getBaseDef(){
-        return this.baseDef;
+        return baseDef;
     }
     /**
      * Gets the {@link #baseHpMax}.
@@ -68,7 +68,7 @@ public enum PlayerType {
      * @return the baseHpMax.
      */
     public int getBaseMaxHp(){
-        return this.baseHpMax;
+        return baseHpMax;
     }
     /**
      * Gets the {@link #index}.
@@ -76,6 +76,6 @@ public enum PlayerType {
      * @return the index.
      */
     public int getIndex(){
-        return this.index;
+        return index;
     }
 }

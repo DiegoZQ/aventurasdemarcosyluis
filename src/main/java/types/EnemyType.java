@@ -57,10 +57,12 @@ public enum EnemyType {
             if (isAttackableWith(anAttack)){
                 return aPlayer.getRawDamage(anAttack);
             }
-            double damage = -aPlayer.getHpMax()*0.1*(anAttack.getK()-1.5);
-            damage = Math.min(damage,aPlayer.getHp());
-            aPlayer.setHp((int)(aPlayer.getHp()-damage));
-            return 0;
+            else {
+                double damage = aPlayer.getHpMax() * 0.05 * (anAttack.getK());
+                damage = Math.min(damage, aPlayer.getHp());
+                aPlayer.setHp((int)(aPlayer.getHp() - damage));
+                return 0;
+            }
         }
     },
     /**
@@ -131,7 +133,7 @@ public enum EnemyType {
      * @return the baseAtk.
      */
     public int getBaseAtk(){
-        return this.baseAtk;
+        return baseAtk;
     }
     /**
      * Gets the {@link #baseDef}.
@@ -139,7 +141,7 @@ public enum EnemyType {
      * @return the baseDef.
      */
     public int getBaseDef(){
-        return this.baseDef;
+        return baseDef;
     }
     /**
      * Gets the {@link #baseHpMax}.
@@ -147,7 +149,7 @@ public enum EnemyType {
      * @return the baseHpMax.
      */
     public int getBaseMaxHp(){
-        return this.baseHpMax;
+        return baseHpMax;
     }
     /**
      * Gets the {@link #index}.
@@ -155,7 +157,7 @@ public enum EnemyType {
      * @return the index.
      */
     public int getIndex(){
-        return this.index;
+        return index;
     }
     /**
      * Gets the damage from attacking a specific enemy with a correct Player attack type.

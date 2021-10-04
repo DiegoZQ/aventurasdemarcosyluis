@@ -1,10 +1,8 @@
-
 import animantia.Enemy;
 import animantia.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import types.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPlayer {

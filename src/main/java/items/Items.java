@@ -21,9 +21,9 @@ public enum Items {
     /**
      * An int that indicates the position of a certain item in the Players inventory.
      */
-    private int index;
+    private final int index;
     /**
-     * Creates items with a specific {@link #index}.
+     * Creates animantia.player.items with a specific {@link #index}.
      *
      * @param index an index.
      */

@@ -1,21 +1,20 @@
 package animantia;
 
-import types.EnemyAttackType;
-import types.PlayerAttackType;
 import items.*;
+import types.PlayerAttackType;
 import types.PlayerType;
 import java.util.Random;
 import static animantia.AttackTable.PlayerAttackTable;
 
 /**
  * Player is the class creator of every playable creatures controlled by a user. It was created
- * to make the user the protagonist of the game. It has implemented methods to attack Enemies, level up, use items,
+ * to make the user the protagonist of the game. It has implemented methods to attack Enemies, level up, use animantia.player.items,
  * and a shared inventory between the Players to get and use those Items in battle against Enemies. It also
  * has new fields like {@link #fp}, fp max, {@link #exp}, {@link #invincible} and some cheats used to make tests.
  *
  * @author Diego Zuniga.
  */
-public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType, Enemy> implements Levelable {
+public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType, Enemy> {
     private final int fpMax;
     /**
      * Int value needed to perform an attack with a Player.
@@ -39,6 +38,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
     private boolean infiniteEnergy = false;
     /**
      * AbstractItem array used as a shared Inventory between the players to get and use Items.
+     * It has initialized three items with quantity zero.
      */
     private static final AbstractItem[] inventory = new AbstractItem[]{new Star(),new RedMushroom(), new HoneySyrup()};
     /**
@@ -53,13 +53,14 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      */
     private Player(int ATK, int DEF, int HP_MAX, int FP_MAX, int LVL){
         super(ATK, DEF, HP_MAX, LVL);
-        this.fpMax = FP_MAX;
-        this.fp = FP_MAX;
-        this.exp = 0;
+        fpMax = FP_MAX;
+        fp = FP_MAX;
+        exp = 0;
     }
     /**
      * Creates a new Player using an PlayerType to set its base stats in the constructor
-     * {@link #Player(int, int, int, int, int)}. It also sets the fpMax and level equal to 4 and 1
+     * {@link #Player(int, int, int, int, int)} and its type to identify this Player when is attacking
+     * or being attacked. It also sets the fpMax and level equal to 4 and 1
      * respectively.
      *
      * @param aPlayer Player type.
@@ -74,7 +75,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @return the maximum fp.
      */
     public int getFpMax(){
-        return this.fpMax;
+        return fpMax;
     }
     /**
      * Gets the {@link #fp}.
@@ -82,16 +83,19 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @return the fight points.
      */
     public int getFp(){
-        return this.fp;
+        return fp;
     }
     /**
      * Sets the {@link #fp} with the restriction than
-     * fp setter can't be higher than fpMax.
+     * fp setter can't be higher than fpMax except when the Player
+     * has {@link #infiniteEnergy} and FP to set is lower than Player's fp.
      *
      * @param FP fight points.
      */
     public void setFp(int FP){
-        this.fp = Math.min(FP, this.getFpMax());
+        if (!infiniteEnergy || getFp()<FP){
+            fp = Math.min(FP, getFpMax());
+        }
     }
     /**
      * Checks if the player is {@link #invincible}.
@@ -100,7 +104,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      *         false otherwise.
      */
     private boolean isInvincible(){
-        return this.invincible;
+        return invincible;
     }
     /**
      * Sets the boolean value of {@link #invincible}.
@@ -108,7 +112,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @param aBool true to activate; false to desactivate.
      */
     public void setInvincible(boolean aBool){
-        this.invincible=aBool;
+        invincible=aBool;
     }
     /**
      * Sets the boolean value of {@link #perfectPrecision}.
@@ -116,7 +120,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @param aBool true to activate; false to desactivate.
      */
     public void setPerfectPrecision(boolean aBool){
-        this.perfectPrecision=aBool;
+        perfectPrecision=aBool;
     }
     /**
      * Sets the boolean value of {@link #infiniteEnergy}.
@@ -124,48 +128,63 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      * @param aBool true to activate; false to desactivate.
      */
     public void setInfiniteEnergy(boolean aBool){
-        this.infiniteEnergy=aBool;
+        infiniteEnergy=aBool;
     }
     /**
      * Sets hit points to Player except when Player is invincible
-     * and HP to set is lower than Player actual HP.
+     * and HP to set is lower than Player's actual hp.
      *
      * @param HP hit points.
      */
     @Override
     public void setHp(int HP){
-        if (!isInvincible() || this.getHp()<HP){
+        if (!isInvincible() || getHp()<HP){
             super.setHp(HP);
         }
     }
-    public void levelUp(){
-        this.setAtk((int)(this.getAtk()*(1+1/(double)getLvl())));
-        this.setDef((int)(this.getDef()*(1+1/(double)getLvl())));
-        this.setHpMax((int)(this.getHpMax()*(1+1/(double)getLvl())));
-        this.setHp(getHpMax());
-        this.fp=this.fpMax;
-        this.setLvl(this.getLvl()+1);
+    /**
+     * Increases every stat of the Player and sets its hp and fp to its maximum available.
+     */
+    private void levelUp(){
+        setAtk((int)(getAtk()*(1+1.0/getLvl())));
+        setDef((int)(getDef()*(1+1.0/getLvl())));
+        setHpMax((int)(getHpMax()*(1+1.0/getLvl())));
+        setHp(getHpMax());
+        fp=fpMax;
+        setLvl(getLvl()+1);
     }
+    /**
+     * {@link #levelUp} n times.
+     *
+     * @param n Quantity of levels to level up.
+     */
     public void levelUp(int n){
         for (int i=0;i<n;i++){
-            this.levelUp();
-        }
-    }
-    public void tryLevelUp(){
-        while (this.exp>=2){
-            this.levelUp();
-            this.exp -= 2;
+            levelUp();
         }
     }
     /**
-     * Checks if an attack hits the target using the attack accuracy and comparing it with a random double number
-     * between 0 and 1.
+     * {@link #levelUp} a Player if it has enough exp to do it.
+     */
+    public void tryLevelUp(){
+        while (exp>=2){
+            levelUp();
+            exp -= 2;
+        }
+    }
+    /**
+     * Checks if the Player has {@link #perfectPrecision} to return true. Otherwise, checks if an attack
+     * hits the target using the attack accuracy and comparing it with a
+     * random double number between 0 and 1.
      *
      * @param anAttack Attack chosen from all possible attacks that a Player can do.
-     * @return true if the Player hits;
+     * @return true if the Player has perfectPrecision or hits;
      *         false otherwise.
      */
     public boolean hit(PlayerAttackType anAttack){
+        if (perfectPrecision){
+            return true;
+        }
         double rand = new Random().nextDouble();
         return anAttack.getAccuracy() >= rand;
     }
@@ -178,7 +197,7 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      */
     @Override
     public double getRawDamage(PlayerAttackType anAttack){
-        return anAttack.getK()*this.getAtk()*this.getLvl();
+        return anAttack.getK()*getAtk()*getLvl();
     }
     /**
      * Checks if the Player and the Enemy aren't Knocked out to perform the attack.
@@ -191,31 +210,42 @@ public final class Player extends AbstractAnimantia<PlayerType, PlayerAttackType
      */
     @Override
     protected boolean canAttack(Enemy anEnemy){
-        boolean isAttackable = PlayerAttackTable[this.getType().getIndex()][anEnemy.getType().getIndex()];
-        return !this.isKO() && !anEnemy.isKO() && isAttackable;
+        boolean isAttackable = PlayerAttackTable[getType().getIndex()][anEnemy.getType().getIndex()];
+        return !isKO() && !anEnemy.isKO() && isAttackable;
     }
     /**
-     * Attacks an Enemy lowering his hit points using a specific attack when {@link #canAttack} is true and
-     * the Player has enough {@link #fp}. If the attack is not hit, nothing else happens. Also, if the Enemy
+     * Check if the Player {@link #canAttack} the enemy and has enough {@link #fp} to perform the attack.
+     *
+     * @param anEnemy Enemy to be attacked.
+     * @param anAttack Attack chosen from all possible attacks that a Player can do.
+     * @return true if the Player can attack the Enemy using anAttack;
+     *         false otherwise.
+     */
+    private boolean canAttack(Enemy anEnemy, PlayerAttackType anAttack){
+        return this.canAttack(anEnemy) && getFp()>=anAttack.getEnergy();
+    }
+    /**
+     * Attacks an Enemy lowering his hit points using a specific attack when
+     * {@link #canAttack(Enemy, PlayerAttackType)} is true.
+     * If the attack is not hit, nothing else happens. Also, if the Enemy
      * is inmune to the attack the resulting damage is zero and the Player gets penalized (or not).
-     * Plus if the enemy gets Knocked out after the attack, the Enemy difficulty increases by 0.5.
+     * Plus if the enemy gets Knocked out after the attack, the Enemy difficulty increases
+     * and the Player gets exp.
      *
      * @param anEnemy Enemy to be attacked.
      * @param anAttack Attack chosen from all possible attacks that a Player can do.
      */
     @Override
     public void attack(Enemy anEnemy, PlayerAttackType anAttack){
-        if (this.canAttack(anEnemy) && this.getFp()>=anAttack.getEnergy()){
-            if (this.hit(anAttack) || this.perfectPrecision){
+        if (canAttack(anEnemy, anAttack)){
+            if (hit(anAttack)){
                 int damage = (int)(anEnemy.getType().beAttackedBy(this, anAttack)/anEnemy.getDef());
                 anEnemy.setHp(anEnemy.getHp()-damage);
                 if (anEnemy.isKO()){
-                    this.exp++;
+                    exp++;
                 }
             }
-            if (!this.infiniteEnergy){
-                this.setFp(this.getFp()-anAttack.getEnergy());
-            }
+            setFp(getFp()-anAttack.getEnergy());
         }
     }
     /**
