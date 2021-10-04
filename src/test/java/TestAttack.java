@@ -1,4 +1,3 @@
-
 import animantia.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,4 +71,4 @@ public class TestAttack {
         testSpiny.attack(testMarcos,EnemyAttackType.BASICATTACK);
         assert testMarcos.getHp()<testMarcos.getHpMax();
     }
-}
+}//196

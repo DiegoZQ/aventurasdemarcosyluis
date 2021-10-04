@@ -29,6 +29,6 @@ public enum EnemyAttackType {
      * @return the constant k.
      */
     public double getK(){
-        return this.k;
+        return k;
     }
-}
+}//353

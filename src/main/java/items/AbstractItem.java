@@ -10,25 +10,42 @@ import animantia.Player;
  *
  * @author Diego Zuniga.
  */
-public abstract class AbstractItem implements Consumable {
+public abstract class AbstractItem{
     /**
      * Int value which determines how many times an item can be used to get its effects.
      */
     private int quantity;
     /**
-     * Creates an Abstract Item with quantity zero.
+     * Creates an Item with quantity zero.
      */
-    public AbstractItem(){
-        this.quantity = 0;
+    protected AbstractItem(){
+        quantity = 0;
     }
+    /**
+     * Reduces by one the quantity of the Item.
+     */
     public void consume(){
-        this.quantity--;
+        quantity--;
     }
+    /**
+     * Increases by one the quantity of the Item.
+     */
     public void add(){
-        this.quantity++;
+        quantity++;
     }
+    /**
+     * Checks if an Item is available (or not).
+     *
+     * @return true if quantity of the Item is higher than one;
+     *         false otherwise.
+     */
     public boolean isAvailable(){
-        return this.quantity > 0;
+        return quantity > 0;
     }
+    /**
+     * Gives a specific effect to a Player who uses this Item.
+     *
+     * @param aPlayer who gets the effect.
+     */
     public abstract void giveEffect(Player aPlayer);
-}
+}//169

@@ -1,7 +1,5 @@
 package animantia;
 
-import types.PlayerAttackType;
-
 /**
  * Animantia from Latin "living things" is the name of abstract class, superclass of every class
  * that creates living things with properties like having attack (ATK), defense (DEF), hit points (HP),
@@ -33,12 +31,12 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @param HP_MAX maximum hit points.
      * @param LVL level.
      */
-    public AbstractAnimantia(int ATK, int DEF, int HP_MAX, int LVL){
-        this.atk = ATK;
-        this.def = DEF;
-        this.hpMax = HP_MAX;
-        this.hp = HP_MAX;
-        this.lvl = LVL;
+    protected AbstractAnimantia(int ATK, int DEF, int HP_MAX, int LVL){
+        atk = ATK;
+        def = DEF;
+        hpMax = HP_MAX;
+        hp = HP_MAX;
+        lvl = LVL;
     }
     /**
      * Gets the attack.
@@ -46,7 +44,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the attack.
      */
     protected int getAtk(){
-        return this.atk;
+        return atk;
     }
     /**
      * Sets the attack.
@@ -54,7 +52,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @param ATK attack to set.
      */
     protected void setAtk(int ATK){
-        this.atk = ATK;
+        atk = ATK;
     }
     /**
      * Gets the defense.
@@ -62,7 +60,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the defense.
      */
     protected int getDef(){
-        return this.def;
+        return def;
     }
     /**
      * Sets the defense.
@@ -70,7 +68,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @param DEF defense to set.
      */
     protected void setDef(int DEF){
-        this.def = DEF;
+        def = DEF;
     }
     /**
      * Gets the maximum hit points.
@@ -78,7 +76,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the maximum hit points.
      */
     public int getHpMax(){
-        return this.hpMax;
+        return hpMax;
     }
     /**
      * Sets the maximum hit points.
@@ -86,7 +84,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @param HP_MAX maximum hit points to set.
      */
     protected void setHpMax(int HP_MAX){
-        this.hpMax = HP_MAX;
+        hpMax = HP_MAX;
     }
     /**
      * Gets the hit points.
@@ -94,7 +92,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the hit points.
      */
     public int getHp(){
-        return this.hp;
+        return hp;
     }
     /**
      * Sets the hit points with the restriction than
@@ -102,11 +100,11 @@ public abstract class AbstractAnimantia<Q, R, T> {
      *
      * @param HP hit points.
      */
-    public void setHp(int HP){
+    protected void setHp(int HP){
         if (HP<0){
-            this.hp = 0;
+            hp = 0;
         }
-        else this.hp = Math.min(HP, this.getHpMax());
+        else hp = Math.min(HP, getHpMax());
     }
     /**
      * Gets the level.
@@ -114,7 +112,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the level.
      */
     public int getLvl(){
-        return this.lvl;
+        return lvl;
     }
     /**
      * Sets the level.
@@ -122,7 +120,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @param LVL level.
      */
     protected void setLvl(int LVL){
-        this.lvl = LVL;
+        lvl = LVL;
     }
     /**
      * Gets the type.
@@ -130,7 +128,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return the type.
      */
     protected Q getType(){
-        return this.type;
+        return type;
     }
     /**
      * Sets the type.
@@ -147,7 +145,7 @@ public abstract class AbstractAnimantia<Q, R, T> {
      *         false otherwise.
      */
     public boolean isKO(){
-        return this.getHp() == 0;
+        return getHp() == 0;
     }
     /**
      * Checks if it meets all the requirements to carry out an attack on an Animantia.
@@ -172,4 +170,4 @@ public abstract class AbstractAnimantia<Q, R, T> {
      * @return Raw Damage.
      */
     protected abstract double getRawDamage(R anAttack);
-}
+}//604-1126-1322

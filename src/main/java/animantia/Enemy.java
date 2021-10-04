@@ -1,6 +1,5 @@
 package animantia;
 
-
 import types.EnemyAttackType;
 import types.EnemyType;
 import java.util.concurrent.ThreadLocalRandom;
@@ -40,7 +39,8 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
     /**
      * Creates a new Enemy using an EnemyType to set its base stats in the constructor
      * {@link #Enemy(int, int, int, int)} and weights those stats by the {@link #power} generated
-     * in the last Enemy created using this constructor. If there have been no previously created enemies
+     * in the last Enemy created using this constructor. It also sets its type to identify this Enemy when is attacking
+     * or being attacked. If there have been no previously created enemies
      * then the {@link #power} value for this Enemy is 1.
      *
      * @param anEnemy Enemy type.
@@ -96,7 +96,7 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
      */
     @Override
     protected double getRawDamage(EnemyAttackType anAttack){
-        return anAttack.getK()*this.getAtk()*this.getLvl();
+        return anAttack.getK()*getAtk()*getLvl();
     }
     /**
      * Checks if the Enemy and the Player aren't Knocked out to perform the attack.
@@ -109,8 +109,8 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
      */
     @Override
     protected boolean canAttack(Player aPlayer){
-        boolean isAttackable = EnemyAttackTable[aPlayer.getType().getIndex()][this.getType().getIndex()];
-        return !this.isKO() && !aPlayer.isKO() && isAttackable;
+        boolean isAttackable = EnemyAttackTable[aPlayer.getType().getIndex()][getType().getIndex()];
+        return !isKO() && !aPlayer.isKO() && isAttackable;
     }
     /**
      * Attacks a Player lowering his hit points using a specific attack when {@link #canAttack} is true.
@@ -122,7 +122,7 @@ public final class Enemy extends AbstractAnimantia<EnemyType, EnemyAttackType, P
     @Override
     public void attack(Player aPlayer, EnemyAttackType anAttack){
         if (canAttack(aPlayer)){
-            int damage = (int)(this.getRawDamage(anAttack)/aPlayer.getDef());
+            int damage = (int)(getRawDamage(anAttack)/aPlayer.getDef());
             aPlayer.setHp(aPlayer.getHp()-damage);
         }
     }
