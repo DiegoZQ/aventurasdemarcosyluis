@@ -1,26 +1,27 @@
 package items;
 
-import animantia.Player;
+import interfaces.IPlayer;
 
 /**
- * RedMushroom is a final class that's going to representate a usable Item in Players
- * inventory with the property to heal the user.
+ * RedMushroom is a class that represents a usable Item in Players
+ * inventory with the property to heal the user when is used.
  *
  * @author Diego Zuniga.
  */
-public final class RedMushroom extends AbstractItem {
+public final class RedMushroom extends AbstractItem{
+    /**
+     * Creates a RedMushroom item with quantity equals to zero.
+     */
     public RedMushroom(){
         super();
     }
     /**
-     * Increases the Player's hit points by 10% of his maximum hit points, or up to his
-     * maximum hp if the Player's hp is above 90% of its maximum hp.
+     * Increases the Player's hit points by 10% of his maximum hit points.
      *
      * @param aPlayer Player who gets healed.
      */
     @Override
-    public void giveEffect(Player aPlayer) {
-        int health = (int)(aPlayer.getHp()+aPlayer.getHpMax()*0.1);
-        aPlayer.setHp(health);
+    public void giveEffect(IPlayer aPlayer){
+        aPlayer.receiveHp((int)(aPlayer.getMaxHp()*0.1));
     }
 }

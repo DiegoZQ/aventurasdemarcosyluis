@@ -1,26 +1,27 @@
 package items;
 
-import animantia.Player;
+import interfaces.IPlayer;
 
 /**
- * HoneySyrup is a final class that's going to representate an Item in Players
- * inventory with the property to give fight points (FP) to the user.
+ * HoneySyrup that represent an Item in Players inventory
+ * with the property to give fight points to the user when is used.
  *
  * @author Diego Zuniga.
  */
-public final class HoneySyrup extends AbstractItem {
+public final class HoneySyrup extends AbstractItem{
+    /**
+     * Creates a HoneySyrup item with quantity equals to zero.
+     */
     public HoneySyrup(){
         super();
     }
     /**
-     * Increases the Player's FP by 3, or up to his maximum FP
-     * if the Player's FP is three points or fewer of his maximum FP.
+     * Increases the Player's FP by 3.
      *
      * @param aPlayer Player who gets FP.
      */
     @Override
-    public void giveEffect(Player aPlayer) {
-        int energy = aPlayer.getFp()+3;
-        aPlayer.setFp(energy);
+    public void giveEffect(IPlayer aPlayer){
+        aPlayer.receiveFp(3);
     }
 }
