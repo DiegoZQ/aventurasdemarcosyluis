@@ -1,18 +1,18 @@
-package types;
+package animantia;
 
 /**
  * Player attack types that can use a Player to attack an Enemy with their respective
- * {@link #k}, {@link #energy}  and {@link #accuracy} of the attack.
+ * {@link #k}, {@link #energy} and {@link #accuracy}.
  *
  * @author Diego Zuniga.
  */
-public enum PlayerAttackType {
+public enum PlayerAttackType{
     /**
-     * A jump attack.
+     * A normal attack.
      */
     SALTO(1, 1, 1),
     /**
-     * A hammer attack.
+     * A strong attack.
      */
     MARTILLO(1.5, 2, 0.75);
     /**
@@ -20,7 +20,7 @@ public enum PlayerAttackType {
      */
     private final double k;
     /**
-     * An int number which represent the cost to Players PF when used.
+     * An int number which represent the cost to Player's fp when used.
      */
     private final int energy;
     /**
@@ -30,8 +30,8 @@ public enum PlayerAttackType {
     /**
      * Creates a Player attack type using a {@link #k}, {@link #energy}, and {@link #accuracy}.
      *
-     * @param k a constant k.
-     * @param energy an energy cost.
+     * @param k constant k.
+     * @param energy energy cost.
      * @param accuracy accuracy to hit the target.
      */
     PlayerAttackType(double k, int energy, double accuracy){
@@ -45,7 +45,7 @@ public enum PlayerAttackType {
      * @return the constant k.
      */
     public double getK(){
-        return k;
+        return this.k;
     }
     /**
      * Gets the {@link #energy}.
@@ -53,14 +53,14 @@ public enum PlayerAttackType {
      * @return the energy cost.
      */
     public int getEnergy(){
-        return energy;
+        return this.energy;
     }
     /**
      * Gets the {@link #k}.
      *
      * @return the accuracy to hit the target.
      */
-    public double  getAccuracy(){
-        return accuracy;
+    public double getAccuracy(){
+        return this.accuracy;
     }
 }

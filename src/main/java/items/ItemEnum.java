@@ -5,7 +5,7 @@ package items;
  *
  * @author Diego Zuniga.
  */
-public enum Items {
+public enum ItemEnum{
     /**
      * @see Star
      */
@@ -23,11 +23,11 @@ public enum Items {
      */
     private final int index;
     /**
-     * Creates animantia.player.items with a specific {@link #index}.
+     * Creates an Item with a specific {@link #index}.
      *
      * @param index an index.
      */
-    Items(int index){
+    ItemEnum(int index){
         this.index = index;
     }
     /**
