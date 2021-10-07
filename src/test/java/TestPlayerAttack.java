@@ -17,6 +17,7 @@ public class TestPlayerAttack{
         testMarcos = new Marcos();
         testLuis = new Luis();
     }
+
     @Test
     public void attackGoombaWithSALTO(){
         testGoomba = new Goomba();
@@ -26,6 +27,7 @@ public class TestPlayerAttack{
         testLuis.attack(testGoomba, SALTO);
         assertTrue(testGoomba.isDamaged());
     }
+
     @Test
     public void attackSpinyWithSALTO(){
         testSpiny = new Spiny();
@@ -36,12 +38,14 @@ public class TestPlayerAttack{
         assertFalse(testSpiny.isDamaged());
         assertTrue(testLuis.isDamaged());
     }
+
     @Test
     public void attackBooWithSALTO(){
         testBoo = new Boo();
         testMarcos.attack(testBoo, SALTO);
         assertTrue(testBoo.isDamaged());
     }
+
     @Test
     public void attackGoombaWithMARTILLO(){
         testMarcos.setPerfectPrecision(true);
@@ -53,6 +57,7 @@ public class TestPlayerAttack{
         testLuis.attack(testGoomba, MARTILLO);
         assertTrue(testGoomba.isDamaged());
     }
+
     @Test
     public void attackSpinyWithMARTILLO(){
         testMarcos.setPerfectPrecision(true);
@@ -64,6 +69,7 @@ public class TestPlayerAttack{
         testLuis.attack(testSpiny, MARTILLO);
         assertTrue(testSpiny.isDamaged());
     }
+
     @Test
     public void attackBooWithMARTILLO(){
         testMarcos.setPerfectPrecision(true);

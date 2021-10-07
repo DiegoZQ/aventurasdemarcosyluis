@@ -15,6 +15,7 @@ public final class RedMushroom extends AbstractItem{
     public RedMushroom(){
         super();
     }
+
     /**
      * Increases the Player's hit points by 10% of his maximum hit points.
      *
@@ -22,6 +23,6 @@ public final class RedMushroom extends AbstractItem{
      */
     @Override
     public void giveEffect(IPlayer aPlayer){
-        aPlayer.receiveHp((int)(aPlayer.getMaxHp()*0.1));
+        aPlayer.receiveHp(aPlayer.getMaxHpPercentage(10));
     }
 }

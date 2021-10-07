@@ -15,6 +15,7 @@ public final class HoneySyrup extends AbstractItem{
     public HoneySyrup(){
         super();
     }
+
     /**
      * Increases the Player's FP by 3.
      *

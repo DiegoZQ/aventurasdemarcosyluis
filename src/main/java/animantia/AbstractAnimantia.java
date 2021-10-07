@@ -16,6 +16,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     private int maxHp;
     private int hp;
     private int lvl;
+
     /**
      * Creates an Animantia with a specific attack, defense, max health points and level.
      * It also put implicitly initial hit points equal to maximum hit points.
@@ -32,6 +33,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
         this.hp = MAX_HP;
         this.lvl = LVL;
     }
+
     /**
      * Gets the attack.
      *
@@ -40,6 +42,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected int getAtk(){
         return this.atk;
     }
+
     /**
      * Sets the attack.
      *
@@ -48,6 +51,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected void setAtk(int ATK){
         this.atk = ATK;
     }
+
     /**
      * Gets the defense.
      *
@@ -56,6 +60,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected int getDef(){
         return this.def;
     }
+
     /**
      * Sets the defense.
      *
@@ -64,10 +69,16 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected void setDef(int DEF){
         this.def = DEF;
     }
-    @Override
+
+    /**
+     * Gets the maximum hit points.
+     *
+     * @return the maximum hit points.
+     */
     public int getMaxHp(){
         return this.maxHp;
     }
+
     /**
      * Sets the maximum hit points.
      *
@@ -76,10 +87,16 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected void setHpMax(int MAX_HP){
         this.maxHp = MAX_HP;
     }
-    @Override
+
+    /**
+     * Gets the hit points.
+     *
+     * @return the hit points.
+     */
     public int getHp(){
         return this.hp;
     }
+
     /**
      * Sets the hit points with the restriction than
      * hp to set can't be lower than zero or higher than hpMax.
@@ -94,6 +111,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
             this.hp = Math.min(hp, getMaxHp());
         }
     }
+
     /**
      * Gets the level.
      *
@@ -102,6 +120,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     public int getLvl(){
         return this.lvl;
     }
+
     /**
      * Sets the level.
      *
@@ -110,18 +129,17 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected void setLvl(int LVL){
         this.lvl = LVL;
     }
-    @Override
+
+    /**
+     * Checks if it's damaged.
+     *
+     * @return true if its hit points are lower than its maximum hp;
+     *         false otherwise.
+     */
     public boolean isDamaged(){
         return this.getHp() < this.getMaxHp();
     }
-    @Override
-    public boolean isKO(){
-        return this.getHp() == 0;
-    }
-    @Override
-    public boolean canAttack(CanBeAttacked anAttacked){
-        return !this.isKO() && !anAttacked.isKO();
-    }
+
     /**
      * Subtracts {@link #hp}.
      *
@@ -130,4 +148,27 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     protected void receiveDamage(double damage){
         this.setHp(this.getHp() - (int)damage);
     }
-}//778-1447
+
+    /**
+     * Sets the hp equals to zero.
+     */
+    public void setKO(){
+        this.setHp(0);
+    }
+
+    @Override
+    public boolean isKO(){
+        return this.getHp() == 0;
+    }
+
+    /**
+     * Checks if both attacked and attacker aren't knockout.
+     *
+     * @param anAttacked An attacked.
+     * @return true if both aren't knockout;
+     *         false otherwise.
+     */
+    public boolean canAttack(CanBeAttacked anAttacked){
+        return !this.isKO() && !anAttacked.isKO();
+    }
+}//941-1280-1657

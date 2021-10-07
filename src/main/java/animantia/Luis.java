@@ -16,10 +16,12 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
     public Luis(){
         super(25,6,200,4,1);
     }
+
     @Override
     public void attackedByBoo(Boo aBoo){
         this.receiveDamage(0.75 * aBoo.getAtk() / this.getDef());
     }
+
     /**
      * Checks if Luis can attack an Enemy.
      *
@@ -32,6 +34,7 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
     private boolean canAttack(AttackableByLuis anEnemy, PlayerAttackType anAttack){
         return super.canAttack(anEnemy) && this.hasEnoughFpToPerform(anAttack);
     }
+
     /**
      * Checks if {@link #canAttack(AttackableByLuis, PlayerAttackType)} is true.
      * If it is, then tries to hit the Enemy to lower its hit points and lose

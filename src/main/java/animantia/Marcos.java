@@ -15,6 +15,7 @@ public final class Marcos extends AbstractPlayer{
     public Marcos(){
         super(20,10,300,4,1);
     }
+
     /**
      * Checks if Marcos can attack an Enemy.
      *
@@ -27,6 +28,7 @@ public final class Marcos extends AbstractPlayer{
     private boolean canAttack(AttackableByMarcos anEnemy, PlayerAttackType anAttack){
         return super.canAttack(anEnemy) && this.hasEnoughFpToPerform(anAttack);
     }
+
     /**
      * Checks if {@link #canAttack(AttackableByMarcos, PlayerAttackType)} is true.
      * If it is, then tries to hit the Enemy to lower its hit points and lose

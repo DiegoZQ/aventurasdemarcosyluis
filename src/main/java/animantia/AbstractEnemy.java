@@ -1,6 +1,7 @@
 package animantia;
 
 import interfaces.AttackableByMarcos;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -16,10 +17,12 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
      * A static double value used to set the upper bound of the next enemy stats.
      */
     private static double difficulty=1;
+
     /**
      * A static int value used to set the next Enemy stats.
      */
     private static int power=1;
+
     /**
      * Creates a new Enemy using parameters like attack, defense maximum hit points and level
      * weighted by the actual Enemies {@link #power}. It also set the value of the new Enemies
@@ -36,6 +39,7 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
         AbstractEnemy.setPower(ThreadLocalRandom.current().nextInt(
                 Math.max(1, (int)difficulty - 3), (int)difficulty + 1));
     }
+
     /**
      * Gets the {@link #difficulty}.
      *
@@ -44,6 +48,7 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
     private static double getDifficulty(){
         return AbstractEnemy.difficulty;
     }
+
     /**
      * Sets the {@link #difficulty}.
      *
@@ -52,9 +57,21 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
     private static void setDifficulty(double difficulty){
         AbstractEnemy.difficulty = difficulty;
     }
-    protected static void increaseDifficulty(double difficulty){
-        setDifficulty(getDifficulty() + difficulty);
+
+    /**
+     * Increases the {@link #difficulty} by 0.5.
+     */
+    protected static void increaseDifficulty(){
+        setDifficulty(getDifficulty() + 0.5);
     }
+
+    /**
+     * Sets difficulty back to its initial value.
+     */
+    public static void resetDifficulty(){
+        AbstractEnemy.difficulty = 1;
+    }
+
     /**
      * Gets the {@link #power}.
      *
@@ -63,6 +80,7 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
     private static int getPower(){
         return AbstractEnemy.power;
     }
+
     /**
      * Sets the {@link #power}.
      *
@@ -71,11 +89,19 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements Attacka
     private static void setPower(int power){
         AbstractEnemy.power = power;
     }
+
+    /**
+     * Sets power back to its initial value.
+     */
+    public static void resetPower(){
+        AbstractEnemy.power = 1;
+    }
+
     @Override
     public void attackedByMarcos(Marcos aMarcos, PlayerAttackType anAttack){
         this.receiveDamage(anAttack.getK() * aMarcos.getAtk() / this.getDef());
         if (this.isKO()){
-            increaseDifficulty(0.5);
+            increaseDifficulty();
             aMarcos.receiveExp(1);
         }
     }

@@ -1,4 +1,5 @@
 import animantia.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static animantia.PlayerAttackType.MARTILLO;
@@ -26,6 +27,13 @@ public class TestEnemy{
         testBoo = new Boo();
         testBoo2 = new Boo();
     }
+
+    @AfterEach
+    public void reset(){
+        AbstractEnemy.resetDifficulty();
+        AbstractEnemy.resetPower();
+    }
+
     @Test
     public void spawnEnemyTest(){
         assertFalse(testGoomba.isDamaged());
@@ -35,6 +43,27 @@ public class TestEnemy{
         assertFalse(testBoo.isDamaged());
         assertEquals(1, testBoo.getLvl());
     }
+
+    @Test
+    public void LifeCantBeLowerThanZero(){
+        testLuis.setInfiniteEnergy(true);
+        for (int i = 0; i < 20; i++){
+            testLuis.attack(testGoomba, SALTO);
+        }
+        assertTrue(testGoomba.isKO());
+    }
+
+    @Test
+    public void cantAttackWhenKO(){
+        testGoomba.setKO();
+        testSpiny.setKO();
+        testBoo.setKO();
+        testGoomba.attack(testLuis);
+        testSpiny.attack(testLuis);
+        testBoo.attack(testLuis);
+        assertFalse(testLuis.isDamaged());
+    }
+
     @Test
     public void enemiesGetPowerfulTest(){
         assertEquals(testGoomba.getLvl(),testGoomba2.getLvl());
@@ -43,7 +72,7 @@ public class TestEnemy{
         testMarcos.setInfiniteEnergy(true);
         testLuis.setInfiniteEnergy(true);
         testLuis.setPerfectPrecision(true);
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 1000; i++){
             testLuis.attack(testGoomba2, MARTILLO);
             if (testGoomba2.isKO()){
                 testGoomba2 = new Goomba();
@@ -61,4 +90,4 @@ public class TestEnemy{
         assertTrue(testSpiny.getLvl()<testSpiny2.getLvl());
         assertTrue(testBoo.getLvl()<testBoo2.getLvl());
     }
-}//278
+}//377
