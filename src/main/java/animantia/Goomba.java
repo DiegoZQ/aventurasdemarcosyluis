@@ -17,14 +17,16 @@ public final class Goomba extends AbstractEnemy implements AttackableByLuis{
     public Goomba() {
         super(20,4,100,1);
     }
+
     @Override
     public void attackedByLuis(Luis aLuis, PlayerAttackType anAttack){
         this.receiveDamage(anAttack.getK() * aLuis.getAtk() / this.getDef());
         if (this.isKO()){
-            increaseDifficulty(0.5);
+            increaseDifficulty();
             aLuis.receiveExp(1);
         }
     }
+
     /**
      * Checks if {@link #canAttack(CanBeAttacked)} is true.
      * If it is, then attacks the Player lowering its hit points.

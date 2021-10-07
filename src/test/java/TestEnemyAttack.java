@@ -18,18 +18,18 @@ public class TestEnemyAttack{
         testMarcos = new Marcos();
         testLuis = new Luis();
     }
+
     @Test
     public void attackMarcos(){
-        testMarcos = new Marcos();
         testGoomba.attack(testMarcos);
         assertTrue(testMarcos.isDamaged());
         testMarcos = new Marcos();
         testSpiny.attack(testMarcos);
         assertTrue(testMarcos.isDamaged());
     }
+
     @Test
     public void attackLuis(){
-        testLuis = new Luis();
         testGoomba.attack(testLuis);
         assertTrue(testLuis.isDamaged());
         testLuis = new Luis();

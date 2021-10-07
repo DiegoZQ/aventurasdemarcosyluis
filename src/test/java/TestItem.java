@@ -1,4 +1,5 @@
 import animantia.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static animantia.PlayerAttackType.SALTO;
@@ -16,58 +17,73 @@ public class TestItem{
         testLuis = new Luis();
         testGoomba = new Goomba();
     }
+
+    @AfterEach
+    public void reset(){
+        AbstractPlayer.resetInventory();
+    }
+
     @Test
     public void tryToUseUnavailableItemTest(){
         testLuis.attack(testGoomba, SALTO);
         testLuis.use(HONEYSYRUP);
         assertTrue(testLuis.isTired());
     }
+
+    @Test
+    public void tryToUseItemWhenKO(){
+        testLuis.setKO();
+        testLuis.getAndUse(REDMUSHROOM);
+        assertTrue(testLuis.isKO());
+    }
+
     @Test
     public void useStarTest(){
-        testMarcos.get(STAR);
-        testMarcos.use(STAR);
+        testMarcos.getAndUse(STAR);
         testGoomba.attack(testMarcos);
         assertFalse(testMarcos.isDamaged());
     }
+
     @Test
     public void useRedMushroomTest(){
         testGoomba.attack(testLuis);
         int lastHp = testLuis.getHp();
-        testLuis.get(REDMUSHROOM);
-        testLuis.use(REDMUSHROOM);
+        testLuis.getAndUse(REDMUSHROOM);
         assertTrue(testLuis.getHp() > lastHp);
     }
+
     @Test
     public void useHoneySyrupTest(){
         testLuis.attack(testGoomba, SALTO);
         assertTrue(testLuis.isTired());
-        testLuis.get(HONEYSYRUP);
-        testLuis.use(HONEYSYRUP);
+        testLuis.getAndUse(HONEYSYRUP);
         assertFalse(testLuis.isTired());
     }
+
     @Test
     public void maxHpTest(){
         for (int i = 0; i < 5 ; i++){
-            testLuis.get(REDMUSHROOM);
-            testLuis.use(REDMUSHROOM);
+            testLuis.getAndUse(REDMUSHROOM);
         }
         assertEquals(testLuis.getMaxHp(), testLuis.getHp());
     }
+
     @Test
     public void maxFpTest(){
         for (int i = 0; i < 5 ; i++){
-            testLuis.get(HONEYSYRUP);
-            testLuis.use(HONEYSYRUP);
+            testLuis.getAndUse(HONEYSYRUP);
         }
         assertEquals(testLuis.getMaxFp(), testLuis.getFp());
     }
+
     @Test
-    public void useItemOnAnotherPlayer(){
+    public void useItemOnAnotherPlayerTest(){
         testLuis.attack(testGoomba, SALTO);
         testMarcos.get(HONEYSYRUP);
         testMarcos.use(HONEYSYRUP, testLuis);
         assertFalse(testLuis.isTired());
     }
+
     @Test
     public void sharedInventoryTest(){
         testLuis.get(HONEYSYRUP);

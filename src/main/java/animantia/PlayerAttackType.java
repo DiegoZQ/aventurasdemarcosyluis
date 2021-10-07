@@ -15,18 +15,22 @@ public enum PlayerAttackType{
      * A strong attack.
      */
     MARTILLO(1.5, 2, 0.75);
+
     /**
      * A double constant used in attack formula.
      */
     private final double k;
+
     /**
      * An int number which represent the cost to Player's fp when used.
      */
     private final int energy;
+
     /**
      * A double number which represent the probably to hit an Enemy.
      */
     private final double accuracy;
+
     /**
      * Creates a Player attack type using a {@link #k}, {@link #energy}, and {@link #accuracy}.
      *
@@ -39,6 +43,7 @@ public enum PlayerAttackType{
         this.energy = energy;
         this.accuracy = accuracy;
     }
+
     /**
      * Gets the {@link #k}.
      *
@@ -47,6 +52,7 @@ public enum PlayerAttackType{
     public double getK(){
         return this.k;
     }
+
     /**
      * Gets the {@link #energy}.
      *
@@ -55,6 +61,7 @@ public enum PlayerAttackType{
     public int getEnergy(){
         return this.energy;
     }
+
     /**
      * Gets the {@link #k}.
      *

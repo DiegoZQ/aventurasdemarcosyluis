@@ -16,6 +16,7 @@ public final class Star extends AbstractItem{
     public Star(){
         super();
     }
+
     /**
      * Makes a Player invencible.
      *

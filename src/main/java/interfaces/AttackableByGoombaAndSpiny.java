@@ -15,6 +15,7 @@ public interface AttackableByGoombaAndSpiny extends IPlayer{
      * @param aGoomba a Goomba.
      */
     void attackedByGoomba(Goomba aGoomba);
+
     /**
      * Receives the damage for being attacked by Spiny.
      *

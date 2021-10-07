@@ -11,12 +11,14 @@ public interface Consumable{
      * Reduces by one the quantity of the Item.
      */
     void consume();
+
     /**
      * Increases the Item's quantity by a specific number.
      *
      * @param quantity quantity to add.
      */
     void add(int quantity);
+
     /**
      * Checks if an Item is available (or not).
      *
@@ -24,6 +26,7 @@ public interface Consumable{
      *         false otherwise.
      */
     boolean isAvailable();
+
     /**
      * Gives a specific effect to a Player who uses this Item.
      *

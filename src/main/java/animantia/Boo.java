@@ -18,6 +18,7 @@ public final class Boo extends AbstractEnemy{
     public Boo() {
         super(30,4,75,1);
     }
+
     /**
      * Receives the damage for being attacked by Marcos unless the attack performed by Marcos
      * is MARTILLO.
@@ -29,6 +30,7 @@ public final class Boo extends AbstractEnemy{
             super.attackedByMarcos(aMarcos, anAttack);
         }
     }
+
     /**
      * Checks if {@link #canAttack(CanBeAttacked)} is true.
      * If it is, then attacks the Player lowering its hit points.

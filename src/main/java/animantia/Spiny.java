@@ -19,6 +19,7 @@ public final class Spiny extends AbstractEnemy implements AttackableByLuis{
     public Spiny(){
         super(15,10,150,1);
     }
+
     /**
      * Receives the damage for being attacked by Marcos unless the attack performed by Marcos
      * is SALTO, in that case Marcos receives damage equals to 5% of his maximum hp.
@@ -27,12 +28,13 @@ public final class Spiny extends AbstractEnemy implements AttackableByLuis{
     @Override
     public void attackedByMarcos(Marcos aMarcos, PlayerAttackType anAttack){
         if (anAttack == SALTO){
-            aMarcos.receiveDamage(aMarcos.getMaxHp() * 0.05);
+            aMarcos.receiveDamage(aMarcos.getMaxHpPercentage(5));
         }
         else{
             super.attackedByMarcos(aMarcos, anAttack);
         }
     }
+
     /**
      * Receives the damage for being attacked by Luis unless the attack performed by Luis
      * is SALTO, in that case Luis receives damage equals to 5% of his maximum hp.
@@ -41,16 +43,17 @@ public final class Spiny extends AbstractEnemy implements AttackableByLuis{
     @Override
     public void attackedByLuis(Luis aLuis, PlayerAttackType anAttack){
         if (anAttack == SALTO){
-            aLuis.receiveDamage(aLuis.getMaxHp() * 0.05);
+            aLuis.receiveDamage(aLuis.getMaxHpPercentage(5));
         }
         else{
             this.receiveDamage(anAttack.getK() * aLuis.getAtk() / this.getDef());
             if (this.isKO()){
-                increaseDifficulty(0.5);
+                increaseDifficulty();
                 aLuis.receiveExp(1);
             }
         }
     }
+
     /**
      * Checks if {@link #canAttack(CanBeAttacked)} is true.
      * If it is, then attacks the Player lowering its hit points.

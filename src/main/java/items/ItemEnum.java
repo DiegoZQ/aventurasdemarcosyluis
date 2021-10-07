@@ -18,10 +18,12 @@ public enum ItemEnum{
      * @see HoneySyrup
      */
     HONEYSYRUP(2);
+
     /**
      * An int that indicates the position of a certain item in the Players inventory.
      */
     private final int index;
+
     /**
      * Creates an Item with a specific {@link #index}.
      *
@@ -30,6 +32,7 @@ public enum ItemEnum{
     ItemEnum(int index){
         this.index = index;
     }
+
     /**
      * Gets the {@link #index}.
      *

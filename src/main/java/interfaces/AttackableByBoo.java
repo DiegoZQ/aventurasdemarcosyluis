@@ -14,4 +14,4 @@ public interface AttackableByBoo extends IPlayer{
      * @param aBoo a Boo.
      */
     void attackedByBoo(Boo aBoo);
-}//225
+}//170
