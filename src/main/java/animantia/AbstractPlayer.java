@@ -1,40 +1,30 @@
 package animantia;
 
-import interfaces.AttackableByGoombaAndSpiny;
 import interfaces.Consumable;
 import interfaces.IPlayer;
 import items.*;
 import java.util.Random;
 
 /**
- * Player is the class creator of every playable creatures controlled by a user. It was created
+ * AbstractPlayer is the class creator of every playable creatures controlled by a user. It was created
  * to make the user the protagonist of the game. It has implemented methods to attack Enemies, level up
- * and use items. It also has fields like a shared inventory between the Players to get and use those items
- * in battle against Enemies,  {@link #fp},  {@link #maxFp},  {@link #exp} and some boolean values used as cheats
+ * and use items. It also has fields like a shared chest between the Players to get and use those items
+ * in battle against Enemies,  {@link #fp},  {@link #maxFp}, and some boolean values used as cheats
  * to test attacks.
  *
  * @author Diego Zuniga.
  */
-public abstract class AbstractPlayer extends AbstractAnimantia implements IPlayer, AttackableByGoombaAndSpiny{
+public abstract class AbstractPlayer extends AbstractAnimantia implements IPlayer {
+
     /**
      * Max fights points that a Player can have.
      */
-    private final int maxFp;
+    private int maxFp;
 
     /**
      * Int value needed to perform an attack with a Player.
      */
     private int fp;
-
-    /**
-     * Int value required to level up.
-     */
-    private int exp;
-
-    /**
-     * Boolean value to get zero damage from an Enemy when is true.
-     */
-    private boolean invincible = false;
 
     /**
      * Boolean value to hit every attack when is true.
@@ -47,14 +37,14 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     private boolean infiniteEnergy = false;
 
     /**
-     * Consumable array used as a shared Inventory between the players to get and use Items.
+     * Consumable array used as a shared chest between the players to get and use Items.
      * It has initialized three different consumable Items.
      */
-    private static final Consumable[] inventory = new Consumable[]{new Star(),new RedMushroom(), new HoneySyrup()};
+    private static Chest chest;
 
     /**
      * Creates a new Player using parameters like attack, defense maximum hit points, maximum {@link #fp} and level.
-     * It also sets the initial fp an exp equal to fpMax and zero respectively.
+     * It also sets the initial fp equal to fpMax.
      *
      * @param ATK attack.
      * @param DEF defense.
@@ -66,7 +56,7 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
         super(ATK, DEF, MAX_HP, LVL);
         this.maxFp = MAX_FP;
         this.fp = MAX_FP;
-        this.exp = 0;
+
     }
 
     @Override
@@ -123,12 +113,6 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
         }
     }
 
-    /**
-     * Checks if a Player doesn't have its fight points up to its maximum.
-     *
-     * @return true if Player's fp are lower than Player's maxFp;
-     *         false otherwise.
-     */
     public boolean isTired(){
         return this.getFp() < this.getMaxFp();
     }
@@ -142,30 +126,6 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
      */
     protected boolean hasEnoughFpToPerform(PlayerAttackType anAttack){
         return this.getFp() >= anAttack.getEnergy();
-    }
-
-    /**
-     * Increases the Player's exp by a specific value.
-     *
-     * @param exp exp to increase.
-     */
-    public void receiveExp(int exp){
-        this.exp += exp;
-    }
-
-    /**
-     * Checks if the player is {@link #invincible}.
-     *
-     * @return true if the player is invincible;
-     *         false otherwise.
-     */
-    private boolean isInvincible(){
-        return this.invincible;
-    }
-
-    @Override
-    public void setInvincible(boolean aBool){
-        this.invincible = aBool;
     }
 
     /**
@@ -190,10 +150,11 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
      * Increases every stat of the Player and sets its hp and fp up to its maximum available.
      */
     private void levelUp(){
-        this.setAtk((int)(this.getAtk() * (1 + 1.0/this.getLvl())));
-        this.setDef((int)(this.getDef() * (1 + 1.0/this.getLvl())));
-        this.setHpMax((int)(this.getMaxHp() * (1 + 1.0/this.getLvl())));
+        this.setAtk((int)(this.getAtk() * 1.15));
+        this.setDef((int)(this.getDef() * 1.15));
+        this.setHpMax((int)(this.getMaxHp() * 1.15));
         this.setHp(this.getMaxHp());
+        this.maxFp *= 1.15;
         this.setFp(this.getMaxFp());
         this.setLvl(this.getLvl() + 1);
     }
@@ -210,13 +171,21 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     }
 
     /**
-     * {@link #levelUp} a Player if it has enough exp to do it.
+     * Gets the actual Players' chest.
+     *
+     * @return chest.
      */
-    public void tryLevelUp(){
-        while (this.exp >= 2){
-            this.levelUp();
-            this.exp -= 2;
-        }
+    public static Consumable[] getChestItems(){
+        return AbstractPlayer.chest.getItems();
+    }
+
+    /**
+     * Adds a new chest to all players
+     *
+     * @param aChest Chest to add.
+     */
+    public static void setChest(Chest aChest){
+        chest=aChest;
     }
 
     /**
@@ -231,77 +200,57 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     }
 
     /**
+     * Checks if the user can use a specific item on a specific target.
+     *
+     * @param anItem Item to be used.
+     * @return true if {@link #canUse(Consumable)} is true and the target isn't KO;
+     *         false otherwise.
+     */
+    public boolean canUse(Consumable anItem, IPlayer target){
+        return this.canUse(anItem) && !target.isKO();
+    }
+
+    /**
      * Consumes an Item from Players inventory (if it's available)
      * and give its effects to itself.
      *
      * @param anItem Item to be used.
      */
     public void use(ItemEnum anItem){
-        this.use(anItem,this);
+        this.use(this,anItem);
     }
 
-    /**
-     * Consumes an Item from Players inventory (if it's available)
-     * and give its effects to a specific target.
-     *
-     * @param anItem Item to be used.
-     * @param target Player to get the effect.
-     */
-    public void use(ItemEnum anItem, IPlayer target) {
-        if (this.canUse(inventory[anItem.getIndex()])) {
-            inventory[anItem.getIndex()].consume();
-            inventory[anItem.getIndex()].giveEffect(target);
+    public void use(IPlayer target, ItemEnum anItem) {
+        if (this.canUse(chest.get(anItem), target)) {
+            chest.get(anItem).consume();
+            chest.get(anItem).giveEffect(target);
         }
     }
 
     /**
-     * Increases by one the quantity of an Item in Players inventory.
+     * Adds a specific item amount to Players' chest.
      *
-     * @param anItem Item to increase its quantity.
+     * @param anItem Specific item.
+     * @param quantity Amount to add.
      */
-    public void get(ItemEnum anItem){
-        this.get(anItem,1);
+    public static void add(ItemEnum anItem, int quantity){
+        chest.add(anItem, quantity);
     }
 
     /**
-     * Increases by a specific amount the quantity of an Item in Players inventory.
+     * Adds a specific item to Players' chest.
      *
-     * @param anItem Item to increase its quantity.
+     * @param anItem Specific item.
      */
-    public void get(ItemEnum anItem, int amount){
-        inventory[anItem.getIndex()].add(amount);
+    public static void add(ItemEnum anItem){
+        add(anItem,1);
     }
 
     /**
-     * Gets an Item and uses it on itself.
-     *
-     * @param anItem Item to get and use.
+     * Sets the Players' chest back to its initials values (empty).
      */
-    public void getAndUse(ItemEnum anItem){
-        this.get(anItem);
-        this.use(anItem);
-    }
-
-    /**
-     * Sets the Players' inventory back to its initial value.
-     */
-    public static void resetInventory(){
-        inventory[0] = new Star();
-        inventory[1] = new RedMushroom();
-        inventory[2] = new HoneySyrup();
-    }
-
-    /**
-     * Subtracts hit points to Player's using the superclass method unless
-     * the Player is invincible.
-     *
-     * @param damage hp to subtract.
-     */
-    @Override
-    protected void receiveDamage(double damage){
-        if (!this.isInvincible()){
-            super.receiveDamage(damage);
-        }
+    public static void resetChest(){
+        chest.reset();
     }
 
     @Override
@@ -326,5 +275,15 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     protected boolean hit(PlayerAttackType anAttack){
         double rand = new Random().nextDouble();
         return anAttack.getAccuracy() >= rand || perfectPrecision;
+    }
+
+    /**
+     * Converts into a string specific stats like lvl, hp and fp.
+     *
+     * @return the string.
+     */
+    @Override
+    public String toString(){
+        return super.toString() + " FP: " + getFp() + "/" + getMaxFp();
     }
 }

@@ -6,18 +6,16 @@ package items;
  * @author Diego Zuniga.
  */
 public enum ItemEnum{
-    /**
-     * @see Star
-     */
-    STAR(0),
+
     /**
      * @see RedMushroom
      */
-    REDMUSHROOM(1),
+    REDMUSHROOM(0),
+
     /**
      * @see HoneySyrup
      */
-    HONEYSYRUP(2);
+    HONEYSYRUP(1);
 
     /**
      * An int that indicates the position of a certain item in the Players inventory.

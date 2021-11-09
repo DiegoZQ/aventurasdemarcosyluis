@@ -5,7 +5,8 @@ package interfaces;
  *
  * @author Diego Zuniga.
  */
-public interface CanBeAttacked{
+public interface CanMove {
+
     /**
      * Checks if it's knockout.
      *
@@ -13,4 +14,12 @@ public interface CanBeAttacked{
      *         false otherwise.
      */
     boolean isKO();
+
+    /**
+     * Checks if it's damaged.
+     *
+     * @return true if its hit points are lower than its maximum hp;
+     *         false otherwise.
+     */
+    boolean isDamaged();
 }

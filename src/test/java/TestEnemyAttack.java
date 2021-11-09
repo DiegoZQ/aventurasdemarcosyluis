@@ -1,9 +1,11 @@
 import animantia.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestEnemyAttack{
+
     private Marcos testMarcos;
     private Luis testLuis;
     private Goomba testGoomba;
@@ -15,15 +17,20 @@ public class TestEnemyAttack{
         testGoomba = new Goomba();
         testSpiny = new Spiny();
         testBoo = new Boo();
-        testMarcos = new Marcos();
-        testLuis = new Luis();
+        testMarcos = Marcos.getInstance();
+        testLuis = Luis.getInstance();
+    }
+    @AfterEach
+    public void reset(){
+        Marcos.reset();
+        Luis.reset();
     }
 
     @Test
     public void attackMarcos(){
         testGoomba.attack(testMarcos);
         assertTrue(testMarcos.isDamaged());
-        testMarcos = new Marcos();
+        Marcos.reset();
         testSpiny.attack(testMarcos);
         assertTrue(testMarcos.isDamaged());
     }
@@ -32,10 +39,10 @@ public class TestEnemyAttack{
     public void attackLuis(){
         testGoomba.attack(testLuis);
         assertTrue(testLuis.isDamaged());
-        testLuis = new Luis();
+        Luis.reset();
         testSpiny.attack(testLuis);
         assertTrue(testLuis.isDamaged());
-        testLuis = new Luis();
+        Luis.reset();
         testBoo.attack(testLuis);
         assertTrue(testLuis.isDamaged());
     }

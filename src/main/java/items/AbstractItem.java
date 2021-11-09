@@ -11,6 +11,7 @@ import interfaces.Consumable;
  * @author Diego Zuniga.
  */
 public abstract class AbstractItem implements Consumable{
+
     /**
      * Int value which determines how many times an Item can be used to get its effects.
      */
@@ -37,4 +38,19 @@ public abstract class AbstractItem implements Consumable{
     public boolean isAvailable(){
         return quantity > 0;
     }
-}//169
+
+    /**
+     * Checks if two Items are the same.
+     *
+     * @param o Item to compare
+     * @return true if both have the same class and same quantity;
+     *         false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractItem that = (AbstractItem) o;
+        return quantity == that.quantity;
+    }
+}//156

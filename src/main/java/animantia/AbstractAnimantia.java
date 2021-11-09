@@ -1,6 +1,6 @@
 package animantia;
 
-import interfaces.CanBeAttacked;
+import interfaces.CanMove;
 
 /**
  * Animantia from Latin "living things" is the name of abstract class, superclass of every class
@@ -10,7 +10,8 @@ import interfaces.CanBeAttacked;
  *
  * @author Diego Zuniga.
  */
-public abstract class AbstractAnimantia implements CanBeAttacked{
+public abstract class AbstractAnimantia implements CanMove {
+
     private int atk;
     private int def;
     private int maxHp;
@@ -130,12 +131,6 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
         this.lvl = LVL;
     }
 
-    /**
-     * Checks if it's damaged.
-     *
-     * @return true if its hit points are lower than its maximum hp;
-     *         false otherwise.
-     */
     public boolean isDamaged(){
         return this.getHp() < this.getMaxHp();
     }
@@ -150,7 +145,7 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
     }
 
     /**
-     * Sets the hp equals to zero.
+     * Sets the hp equals to zero (used for testing).
      */
     public void setKO(){
         this.setHp(0);
@@ -168,7 +163,18 @@ public abstract class AbstractAnimantia implements CanBeAttacked{
      * @return true if both aren't knockout;
      *         false otherwise.
      */
-    public boolean canAttack(CanBeAttacked anAttacked){
+    public boolean canAttack(CanMove anAttacked){
         return !this.isKO() && !anAttacked.isKO();
     }
-}//941-1280-1657
+
+
+    /**
+     * Converts into a string some specific stats like hp and lvl.
+     *
+     * @return the string.
+     */
+    @Override
+    public String toString(){
+        return "lvl: " + this.getLvl() + " HP: " + this.getHp() + "/"  + this.getMaxHp();
+    }
+}//984-2114-2643

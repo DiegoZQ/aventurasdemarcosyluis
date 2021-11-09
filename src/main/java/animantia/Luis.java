@@ -10,11 +10,29 @@ import interfaces.AttackableByLuis;
  * @author Diego Zuniga.
  */
 public final class Luis extends AbstractPlayer implements AttackableByBoo{
+
+    private static Luis uniqueInstance;
+
     /**
      * Creates a Luis.
      */
-    public Luis(){
-        super(25,6,200,4,1);
+    private Luis(){
+        super(130,3,150,4,1);
+    }
+
+    public static Luis getInstance(){
+        if (uniqueInstance == null){
+            uniqueInstance = new Luis();
+        }
+        return uniqueInstance;
+    }
+
+    public static boolean isAlive() {
+        return !uniqueInstance.isKO();
+    }
+
+    public static void reset(){
+        uniqueInstance = new Luis();
     }
 
     @Override
@@ -50,5 +68,16 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
             }
             this.subtractFp(anAttack.getEnergy());
         }
+    }
+
+    /**
+     * Converts into a string specific stats like lvl, hp and fp, plus the
+     * class type Luis.
+     *
+     * @return the string.
+     */
+    @Override
+    public String toString(){
+        return "Luis " + super.toString();
     }
 }

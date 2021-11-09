@@ -7,20 +7,24 @@ import static items.ItemEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestItem{
+
     private Marcos testMarcos;
     private Luis testLuis;
     private Goomba testGoomba;
 
     @BeforeEach
     public void setUp(){
-        testMarcos = new Marcos();
-        testLuis = new Luis();
+        testMarcos = Marcos.getInstance();
+        testLuis = Luis.getInstance();
         testGoomba = new Goomba();
+        AbstractPlayer.setChest(new Chest());
     }
 
     @AfterEach
     public void reset(){
-        AbstractPlayer.resetInventory();
+        Marcos.reset();
+        Luis.reset();
+        AbstractPlayer.resetChest();
     }
 
     @Test
@@ -33,22 +37,17 @@ public class TestItem{
     @Test
     public void tryToUseItemWhenKO(){
         testLuis.setKO();
-        testLuis.getAndUse(REDMUSHROOM);
+        AbstractPlayer.add(REDMUSHROOM);
+        testLuis.use(REDMUSHROOM);
         assertTrue(testLuis.isKO());
-    }
-
-    @Test
-    public void useStarTest(){
-        testMarcos.getAndUse(STAR);
-        testGoomba.attack(testMarcos);
-        assertFalse(testMarcos.isDamaged());
     }
 
     @Test
     public void useRedMushroomTest(){
         testGoomba.attack(testLuis);
         int lastHp = testLuis.getHp();
-        testLuis.getAndUse(REDMUSHROOM);
+        AbstractPlayer.add(REDMUSHROOM);
+        testLuis.use(REDMUSHROOM);
         assertTrue(testLuis.getHp() > lastHp);
     }
 
@@ -56,14 +55,16 @@ public class TestItem{
     public void useHoneySyrupTest(){
         testLuis.attack(testGoomba, SALTO);
         assertTrue(testLuis.isTired());
-        testLuis.getAndUse(HONEYSYRUP);
+        AbstractPlayer.add(HONEYSYRUP);
+        testLuis.use(HONEYSYRUP);
         assertFalse(testLuis.isTired());
     }
 
     @Test
     public void maxHpTest(){
         for (int i = 0; i < 5 ; i++){
-            testLuis.getAndUse(REDMUSHROOM);
+            AbstractPlayer.add(REDMUSHROOM);
+            testLuis.use(REDMUSHROOM);
         }
         assertEquals(testLuis.getMaxHp(), testLuis.getHp());
     }
@@ -71,7 +72,8 @@ public class TestItem{
     @Test
     public void maxFpTest(){
         for (int i = 0; i < 5 ; i++){
-            testLuis.getAndUse(HONEYSYRUP);
+            AbstractPlayer.add(HONEYSYRUP);
+            testLuis.use(HONEYSYRUP);
         }
         assertEquals(testLuis.getMaxFp(), testLuis.getFp());
     }
@@ -79,14 +81,14 @@ public class TestItem{
     @Test
     public void useItemOnAnotherPlayerTest(){
         testLuis.attack(testGoomba, SALTO);
-        testMarcos.get(HONEYSYRUP);
-        testMarcos.use(HONEYSYRUP, testLuis);
+        AbstractPlayer.add(HONEYSYRUP);
+        testMarcos.use(testLuis, HONEYSYRUP);
         assertFalse(testLuis.isTired());
     }
 
     @Test
     public void sharedInventoryTest(){
-        testLuis.get(HONEYSYRUP);
+        AbstractPlayer.add(HONEYSYRUP);
         testMarcos.attack(testGoomba, SALTO);
         assertTrue(testMarcos.isTired());
         testMarcos.use(HONEYSYRUP);

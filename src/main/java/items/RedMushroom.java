@@ -9,6 +9,7 @@ import interfaces.IPlayer;
  * @author Diego Zuniga.
  */
 public final class RedMushroom extends AbstractItem{
+
     /**
      * Creates a RedMushroom item with quantity equals to zero.
      */
