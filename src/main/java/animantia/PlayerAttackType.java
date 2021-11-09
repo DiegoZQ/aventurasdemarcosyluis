@@ -7,10 +7,12 @@ package animantia;
  * @author Diego Zuniga.
  */
 public enum PlayerAttackType{
+
     /**
      * A normal attack.
      */
     SALTO(1, 1, 1),
+
     /**
      * A strong attack.
      */

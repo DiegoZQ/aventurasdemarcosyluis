@@ -4,11 +4,12 @@ import animantia.Marcos;
 import animantia.PlayerAttackType;
 
 /**
- * This interface is for all Enemies that can be attacked by Marcos.
+ * This interface is for Objects that can be attacked by Marcos.
  *
- * @author Diego Zuniga.
+ * @author Diego Zuniga
  */
-public interface AttackableByMarcos extends CanBeAttacked{
+public interface IEnemy extends CanMove {
+
     /**
      * Receives the damage for being attacked by Marcos.
      *

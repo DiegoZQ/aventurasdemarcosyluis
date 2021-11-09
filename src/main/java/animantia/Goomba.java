@@ -1,8 +1,7 @@
 package animantia;
 
-import interfaces.AttackableByGoombaAndSpiny;
 import interfaces.AttackableByLuis;
-import interfaces.CanBeAttacked;
+import interfaces.IPlayer;
 
 /**
  * Goomba is a subclass of AbstractEnemy used to create a generic Enemy
@@ -10,32 +9,35 @@ import interfaces.CanBeAttacked;
  *
  * @author Diego Zuniga.
  */
-public final class Goomba extends AbstractEnemy implements AttackableByLuis{
+public final class Goomba extends AbstractEnemy implements AttackableByLuis {
+
     /**
      * Creates a Goomba.
      */
     public Goomba() {
-        super(20,4,100,1);
+        super(80,3,100,1);
     }
 
     @Override
     public void attackedByLuis(Luis aLuis, PlayerAttackType anAttack){
         this.receiveDamage(anAttack.getK() * aLuis.getAtk() / this.getDef());
-        if (this.isKO()){
-            increaseDifficulty();
-            aLuis.receiveExp(1);
+    }
+
+    @Override
+    public void attack(IPlayer aPlayer){
+        if (this.canAttack(aPlayer)){
+            aPlayer.attackedByGoomba(this);
         }
     }
 
     /**
-     * Checks if {@link #canAttack(CanBeAttacked)} is true.
-     * If it is, then attacks the Player lowering its hit points.
+     * Converts into a string specific stats like lvl and hp, plus
+     * the class type Goomba.
      *
-     * @param aPlayer Player to be attacked.
+     * @return the string.
      */
-    public void attack(AttackableByGoombaAndSpiny aPlayer){
-        if (this.canAttack(aPlayer)){
-            aPlayer.attackedByGoomba(this);
-        }
+    @Override
+    public String toString(){
+        return "Goomba " + super.toString();
     }
 }

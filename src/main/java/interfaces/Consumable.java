@@ -7,6 +7,7 @@ package interfaces;
  * @author Diego Zuniga.
  */
 public interface Consumable{
+
     /**
      * Reduces by one the quantity of the Item.
      */

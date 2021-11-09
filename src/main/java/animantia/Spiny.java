@@ -1,8 +1,7 @@
 package animantia;
 
-import interfaces.AttackableByGoombaAndSpiny;
 import interfaces.AttackableByLuis;
-import interfaces.CanBeAttacked;
+import interfaces.IPlayer;
 import static animantia.PlayerAttackType.SALTO;
 
 /**
@@ -12,25 +11,24 @@ import static animantia.PlayerAttackType.SALTO;
  *
  * @author Diego Zuniga.
  */
-public final class Spiny extends AbstractEnemy implements AttackableByLuis{
+public final class Spiny extends AbstractEnemy implements AttackableByLuis {
+
     /**
      * Creates a Spiny.
      */
-    public Spiny(){
-        super(15,10,150,1);
+    public Spiny() {
+        super(80, 4, 125, 1);
     }
 
     /**
      * Receives the damage for being attacked by Marcos unless the attack performed by Marcos
      * is SALTO, in that case Marcos receives damage equals to 5% of his maximum hp.
-     *
      */
     @Override
-    public void attackedByMarcos(Marcos aMarcos, PlayerAttackType anAttack){
-        if (anAttack == SALTO){
+    public void attackedByMarcos(Marcos aMarcos, PlayerAttackType anAttack) {
+        if (anAttack == SALTO) {
             aMarcos.receiveDamage(aMarcos.getMaxHpPercentage(5));
-        }
-        else{
+        } else {
             super.attackedByMarcos(aMarcos, anAttack);
         }
     }
@@ -38,31 +36,31 @@ public final class Spiny extends AbstractEnemy implements AttackableByLuis{
     /**
      * Receives the damage for being attacked by Luis unless the attack performed by Luis
      * is SALTO, in that case Luis receives damage equals to 5% of his maximum hp.
-     *
      */
     @Override
-    public void attackedByLuis(Luis aLuis, PlayerAttackType anAttack){
-        if (anAttack == SALTO){
+    public void attackedByLuis(Luis aLuis, PlayerAttackType anAttack) {
+        if (anAttack == SALTO) {
             aLuis.receiveDamage(aLuis.getMaxHpPercentage(5));
-        }
-        else{
+        } else {
             this.receiveDamage(anAttack.getK() * aLuis.getAtk() / this.getDef());
-            if (this.isKO()){
-                increaseDifficulty();
-                aLuis.receiveExp(1);
-            }
+        }
+    }
+
+    @Override
+    public void attack(IPlayer aPlayer) {
+        if (this.canAttack(aPlayer)) {
+            aPlayer.attackedBySpiny(this);
         }
     }
 
     /**
-     * Checks if {@link #canAttack(CanBeAttacked)} is true.
-     * If it is, then attacks the Player lowering its hit points.
+     * Converts into a string specific stats like lvl and hp, plus
+     * the class type Spiny.
      *
-     * @param aPlayer Player to be attacked.
+     * @return the string.
      */
-    public void attack(AttackableByGoombaAndSpiny aPlayer){
-        if (this.canAttack(aPlayer)){
-            aPlayer.attackedBySpiny(this);
-        }
+    @Override
+    public String toString(){
+        return "Spiny " + super.toString();
     }
 }

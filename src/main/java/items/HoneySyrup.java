@@ -9,6 +9,7 @@ import interfaces.IPlayer;
  * @author Diego Zuniga.
  */
 public final class HoneySyrup extends AbstractItem{
+
     /**
      * Creates a HoneySyrup item with quantity equals to zero.
      */

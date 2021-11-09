@@ -1,4 +1,5 @@
 import animantia.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static animantia.PlayerAttackType.MARTILLO;
@@ -6,6 +7,7 @@ import static animantia.PlayerAttackType.SALTO;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPlayerAttack{
+
     private Marcos testMarcos;
     private Luis testLuis;
     private Goomba testGoomba;
@@ -14,8 +16,14 @@ public class TestPlayerAttack{
 
     @BeforeEach
     public void setUp(){
-        testMarcos = new Marcos();
-        testLuis = new Luis();
+        testMarcos = Marcos.getInstance();
+        testLuis = Luis.getInstance();
+    }
+
+    @AfterEach
+    public void reset(){
+        Marcos.reset();
+        Luis.reset();
     }
 
     @Test

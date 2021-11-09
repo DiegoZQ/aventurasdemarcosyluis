@@ -1,7 +1,6 @@
 package animantia;
 
-import interfaces.AttackableByBoo;
-import interfaces.CanBeAttacked;
+import interfaces.*;
 import static animantia.PlayerAttackType.MARTILLO;
 
 /**
@@ -11,12 +10,13 @@ import static animantia.PlayerAttackType.MARTILLO;
  *
  * @author Diego Zuniga.
  */
-public final class Boo extends AbstractEnemy{
+public final class Boo extends AbstractEnemy {
+
     /**
      * Creates a Boo.
      */
     public Boo() {
-        super(30,4,75,1);
+        super(100,2,75,1);
     }
 
     /**
@@ -32,7 +32,7 @@ public final class Boo extends AbstractEnemy{
     }
 
     /**
-     * Checks if {@link #canAttack(CanBeAttacked)} is true.
+     * Checks if {@link #canAttack(CanMove)} is true.
      * If it is, then attacks the Player lowering its hit points.
      *
      * @param aPlayer Player to be attacked.
@@ -41,5 +41,16 @@ public final class Boo extends AbstractEnemy{
         if (this.canAttack(aPlayer)){
             aPlayer.attackedByBoo(this);
         }
+    }
+
+    /**
+     * Converts into a string specific stats like lvl and hp, plus
+     * the class type Boo.
+     *
+     * @return the string.
+     */
+    @Override
+    public String toString(){
+        return "Boo " + super.toString();
     }
 }
