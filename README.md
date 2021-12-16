@@ -67,6 +67,7 @@ además de poder elegir qué tipo de ataque realizar. Para el caso de los enemig
 pues los enemigos atacan a un personaje aleatorio dentro de la lista de personajes disponibles para
 atacar, o se le puede designar un personaje en específico para no dejar las pruebas en manos del azar
 (esto aplica solo para goomba y spiny, pues Boo solo podrá atacar única y exclusivamente a Luis).
+Finalmente, la clase GameRunner permite correr un juego con todo lo especificado anteriormente.
 
 La carpeta interfaces contiene 6 interfaces, de las cuales 2 (las tienen como
 prefijo Attackable) son usadas para restringir a qué enemigos pueden atacar
