@@ -15,7 +15,7 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements IEnemy 
     /**
      * A static int value used to set the next Enemy stats.
      */
-    private static int power=1;
+    private static int power=0;
 
     /**
      * Creates a new Enemy using parameters like attack, defense maximum hit points and level
@@ -24,11 +24,10 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements IEnemy 
      * @param ATK attack.
      * @param DEF defense.
      * @param HP_MAX maximum hit points
-     * @param LVL level.
      */
-    protected AbstractEnemy(int ATK, int DEF, int HP_MAX, int LVL){
-        super((int)(ATK * pow(1.15, power-1)),(int)(DEF * pow(1.15, power-1)),
-                (int)(HP_MAX * pow(1.15, power-1)),(int)(LVL * pow(1.15, power-1)));
+    protected AbstractEnemy(int ATK, int DEF, int HP_MAX){
+        super((int)(ATK * pow(1.15, power)),(int)(DEF * pow(1.15, power)),
+                (int)(HP_MAX * pow(1.15, power)),power);
     }
 
     /**
@@ -42,7 +41,7 @@ public abstract class AbstractEnemy extends AbstractAnimantia implements IEnemy 
      * Sets power back to its initial value.
      */
     public static void resetPower(){
-        AbstractEnemy.power = 1;
+        AbstractEnemy.power = 0;
     }
 
     @Override

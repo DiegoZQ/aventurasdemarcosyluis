@@ -39,6 +39,11 @@ public abstract class AbstractItem implements Consumable{
         return quantity > 0;
     }
 
+    @Override
+    public int getQuantity(){
+        return quantity;
+    }
+
     /**
      * Checks if two Items are the same.
      *
@@ -53,4 +58,9 @@ public abstract class AbstractItem implements Consumable{
         AbstractItem that = (AbstractItem) o;
         return quantity == that.quantity;
     }
-}//156
+
+    @Override
+    public String toString() {
+        return "quantity: " + quantity;
+    }
+}//171

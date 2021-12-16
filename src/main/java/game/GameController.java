@@ -3,9 +3,15 @@ package game;
 import animantia.*;
 import interfaces.*;
 import items.ItemEnum;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import static animantia.PlayerAttackType.MARTILLO;
+import static animantia.PlayerAttackType.SALTO;
+import static items.ItemEnum.HONEYSYRUP;
+import static items.ItemEnum.REDMUSHROOM;
 
 /**
  * GameController is the most important class in this game project. It uses all others classes
@@ -18,9 +24,9 @@ public class GameController {
     /**
      * List Of Goombas and Spinies.
      */
-    private final List<AttackableByLuis> listOfGSs;
+    private List<AttackableByLuis> listOfGSs;
 
-    private final List<Boo> listOfBoos;
+    private List<Boo> listOfBoos;
 
     private int turn;
 
@@ -38,16 +44,41 @@ public class GameController {
 
     private String winner = "Nobody";
 
+    private Round round;
+
+    private Rounds rounds;
+
     /**
-     * Creates a GameController initializing lists, setting the phases and turns.
+     * Move reader
+     */
+    private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+    private PrintStream out = System.out;
+
+    /**
+     * Move chosen by players or script.
+     */
+    private String move;
+
+    /**
+     * Int number that determines the number of times the player has passed.
+     * If it's over 3, the game ends.
+     */
+    private int losePoints;
+
+    /**
+     * Creates a GameController, initializing lists, setting phases, rounds and turns.
      */
     public GameController() {
         listOfGSs = new ArrayList<>();
         listOfBoos = new ArrayList<>();
         turn = 0;
         phaseTurn = 0;
-        setPhase(new MarcosPhase());
+        losePoints = 0;
+        setChest();
         setPhases(new Phases());
+        setRounds(new Rounds());
+        setRound(rounds.getNextRound());
     }
 
     /**
@@ -68,6 +99,52 @@ public class GameController {
     public void setPhases(Phases phases){
         this.phases = phases;
         phases.setController(this);
+    }
+
+    /**
+     * Sets the round and configures the controller.
+     *
+     * @param round Round to set.
+     */
+    public void setRound(Round round){
+        this.round = round;
+        round.setController(this);
+        round.playRound();
+    }
+
+    /**
+     * Gets the actual round number.
+     *
+     * @return the actual round number.
+     */
+    public int getRound(){
+        return rounds.getRoundIndex()+1;
+    }
+
+    /**
+     * Sets the rounds and configures the controller.
+     *
+     * @param rounds Rounds to set.
+     */
+    public void setRounds(Rounds rounds){
+        this.rounds = rounds;
+    }
+
+    /**
+     * Gets the turn.
+     *
+     * @return the turn.
+     */
+    public int getTurn(){
+        return turn;
+    }
+    /**
+     * Gets the phase turn.
+     *
+     * @return the phase turn.
+     */
+    public int getPhaseTurn(){
+        return phaseTurn;
     }
 
     /**
@@ -99,6 +176,23 @@ public class GameController {
     }
 
     /**
+     * Erases all remaining enemies in the round.
+     */
+    public void eraseEnemies(){
+        listOfGSs = new ArrayList<>();
+        listOfBoos = new ArrayList<>();
+
+    }
+
+    /**
+     * Level up all both players.
+     */
+    public void levelUpPlayers(){
+        Marcos.getInstance().levelUp();
+        Luis.getInstance().levelUp();
+    }
+
+    /**
      * Generates a Goomba.
      *
      * @return Goomba generated.
@@ -126,20 +220,6 @@ public class GameController {
     }
 
     /**
-     * Generates a random Enemy using a random number.
-     *
-     * @return Random Enemy generated.
-     */
-    private IEnemy generateRandomEnemy() {
-        int randomNumber = new Random().nextInt(3);
-        return switch (randomNumber) {
-            case 0 -> generateGoomba();
-            case 1 -> generateSpiny();
-            default -> generateBoo();
-        };
-    }
-
-    /**
      * Adds a Goomba or Spiny to listOfGSs.
      *
      * @param anEnemy Enemy to add.
@@ -158,6 +238,37 @@ public class GameController {
     }
 
     /**
+     * Creates an array of random numbers between 0 and 2.
+     *
+     * @param numbers Size of array.
+     * @return the array with random numbers.
+     */
+    public List<Integer> generateRandomNumbers(int numbers){
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < numbers; i++){
+            list.add(new Random().nextInt(2));
+        }
+        return list;
+    }
+
+    /**
+     * Adds random enemies to the round using an array of random numbers.
+     *
+     * @param enemies Array of random numbers.
+     */
+    public void addEnemies(int enemies){
+        List<Integer> list = generateRandomNumbers(enemies);
+        for (int i = 0; i < list.size(); i++){
+            switch (i) {
+                case 0 -> addEnemy(generateGoomba());
+                case 1 -> addEnemy(generateSpiny());
+                default -> addEnemy(generateBoo());
+            }
+
+        }
+    }
+
+    /**
      * Gets the next turn.
      *
      * @return the next turn.
@@ -171,14 +282,14 @@ public class GameController {
     }
 
     /**
-     * Check if the current phase's turn is the last to phase change.
+     * Check if round isn't over, then checks if the current phase's turn is the last to phase change.
      * If yes, then changes the phase and set the phase turn to zero;
      * If not, increases the phaseTurn by one.
      * Finally, gets the next turn.
      */
     public void finishTurn() {
         if (notOver()){
-            if (phaseTurn == phase.getSize()-1) {
+            if (phaseTurn >= phase.getSize()-1) {
                 setPhase(phases.nextPhase());
                 phaseTurn = 0;
             }
@@ -188,7 +299,14 @@ public class GameController {
             turn=getNextTurn();
         }
         else{
-            System.out.println(getWinner() + " won");
+            setPhase(new Phase());
+            out.println(getWinner() + " won the round");
+            if (getWinner().equals("Players") && rounds.getRoundIndex()<4){
+                setRound(rounds.getNextRound());
+            }
+            else{
+                out.println(getWinner() + " won the game");
+            }
         }
     }
 
@@ -209,15 +327,6 @@ public class GameController {
     }
 
     /**
-     * Adds a specific item to Players' chest.
-     *
-     * @param anItem Item to add.
-     */
-    public void addItem(ItemEnum anItem){
-        AbstractPlayer.add(anItem);
-    }
-
-    /**
      * Adds a specific item amount to Players' chest.
      *
      * @param anItem Specific item.
@@ -232,6 +341,13 @@ public class GameController {
      */
     public void increaseDifficulty(){
         AbstractEnemy.increasePower();
+    }
+
+    /**
+     * Resets the difficulty of the next enemies.
+     */
+    public void resetDifficulty(){
+        AbstractEnemy.resetPower();
     }
 
     /**
@@ -266,8 +382,8 @@ public class GameController {
      *
      * @return the list of Enemies.
      */
-    public List<IEnemy> getListOfEnemies() {
-        List<IEnemy> list = new ArrayList<>(listOfGSs);
+    public Lista<IEnemy> getListOfEnemies() {
+        Lista<IEnemy> list = new Lista<>(listOfGSs);
         list.addAll(listOfBoos);
         return list;
     }
@@ -319,8 +435,8 @@ public class GameController {
     }
 
     /**
-     * Action used by Enemies to attack a specific Player,
-     * Not usable by Boo.
+     * Action used by Enemies to attack a specific Player, not usable by Boo.
+     * Mainly used in tests.
      */
     public void enemyTryToAttack(int index){
         this.phase.attack(index);
@@ -335,6 +451,7 @@ public class GameController {
      * @param anAttack Attack to perform.
      */
     public void playerTryToAttack(int targetIndex, PlayerAttackType anAttack){
+        losePoints = 0;
         this.phase.attack(targetIndex, anAttack);
         checkWinner();
         setPhase(new Phase());
@@ -348,6 +465,7 @@ public class GameController {
      * @param anItem Item to use.
      */
     public void tryToUseAnItem(int targetIndex, ItemEnum anItem){
+        losePoints = 0;
         this.phase.use(targetIndex, anItem);
         setPhase(new Phase());
     }
@@ -356,6 +474,8 @@ public class GameController {
      * Finishes the turn.
      */
     public void pass() {
+        losePoints++;
+        checkWinner();
         this.finishTurn();
     }
 
@@ -363,13 +483,20 @@ public class GameController {
      * Checks if a side won. If there is no alive Enemy, then Players win, if there is no
      * alive Player, the Enemies win.
      */
-    public void checkWinner(){
+    private void checkWinner(){
         if (getListOfEnemies().size()==0){
             winner = "Players";
         }
-        else if (getListOfPlayers().size()==0){
+        else if (getListOfPlayers().size()==0 || losePoints>=3){
             winner = "Enemies";
         }
+    }
+
+    /**
+     * Sets the winner to Nobody.
+     */
+    public void resetWinner(){
+        winner = "Nobody";
     }
 
     /**
@@ -377,14 +504,14 @@ public class GameController {
      *
      * @return the winner.
      */
-    public String getWinner(){
+    private String getWinner(){
         return winner;
     }
 
     /**
-     * Checks if the game is not over yet.
+     * Checks if round is not over yet.
      *
-     * @return True if the winner is nobody;
+     * @return True if the winner is Nobody;
      *         false otherwise.
      */
     public boolean notOver() {
@@ -397,5 +524,209 @@ public class GameController {
     public void activePerfectPrecision(){
         Marcos.getInstance().setPerfectPrecision(true);
         Luis.getInstance().setPerfectPrecision(true);
+    }
+
+    /**
+     * Sets the winner equal to Enemies.
+     */
+    private void leave(){
+        winner = "Enemies";
+    }
+
+    /**
+     * Asks user for a move choice or use a script to attack, use and item, pass or leave game.
+     *
+     * @throws IOException Exception thrown by .readLine().
+     */
+    public void chooseMove() throws IOException {
+        out.println("Choose a number: \n 1 to attack - 2 to use an item - 3 to pass - 4 to leave");
+        move = in.readLine();
+
+        switch (move) {
+            case "1" -> chooseTarget();
+            case "2" -> choosePlayer();
+            case "3" -> pass();
+            case "4" -> leave();
+            default -> {
+                out.println("Invalid move!");
+                chooseMove();
+            }
+        }
+    }
+
+    /**
+     * Asks user for choose a target printed as a list with indexes to attack it,
+     * or does it with a script.
+     *
+     * @throws IOException Exception thrown by .readLine().
+     */
+    private void chooseTarget() throws IOException {
+        out.println("Choose a number: " + phase.getListOfTargets().toString());
+        move = in.readLine();
+        try{
+            int target = Integer.parseInt(move);
+            if (target<1 || target>phase.getListOfTargets().size()){
+                out.println("Invalid number!");
+                chooseTarget();
+            }
+            else{
+                chooseAttack(target-1);
+            }
+        }catch(NumberFormatException e){
+            out.println("Invalid number!");
+            chooseTarget();
+
+        }
+    }
+
+    /**
+     * Asks user for choose an attack to perform on a specific target,
+     * or does it with a script.
+     *
+     * @param target Target chosen in chooseTarget method.
+     * @throws IOException Exception thrown by .readLine().
+     */
+    private void chooseAttack(int target) throws IOException {
+        out.println("Choose a number: \n 1 to use JUMP attack - 2 to use HAMMER attack - 3 to return");
+        move = in.readLine();
+
+        switch (move) {
+            case "1" -> {
+                try{
+                    playerTryToAttack(target, SALTO);
+                    finishTurn();
+                }catch(AssertionError e){
+                    out.println(e.getMessage());
+                    chooseAttack(target);
+                }
+            }
+            case "2" -> {
+                try{
+                    playerTryToAttack(target, MARTILLO);
+                    finishTurn();
+                }catch(AssertionError e){
+                    out.println(e.getMessage());
+                    chooseAttack(target);
+                }
+            }
+            case "3" -> chooseMove();
+            default -> {
+                out.println("Invalid number!");
+                chooseAttack(target);
+            }
+        }
+    }
+
+    /**
+     * Asks user for choose a player to use an item on him,
+     * or does it with a script.
+     *
+     * @throws IOException Exception thrown by .readLine().
+     */
+    private void choosePlayer() throws IOException {
+        out.println("Choose a number: \n 1 to use on MARCOS - 2 to use on LUIS - 3 to return");
+        move = in.readLine();
+
+        switch (move) {
+            case "1" -> chooseItem(1);
+            case "2" -> chooseItem(2);
+            case "3" -> chooseMove();
+            default -> {
+                out.println("Invalid number!");
+                choosePlayer();
+            }
+        }
+    }
+
+    /**
+     * Asks user for choose an item to use on a specific player,
+     * or does it with a script.
+     *
+     * @param player Player chosen in choosePlayer method.
+     * @throws IOException Exception thrown by .readLine().
+     */
+    private void chooseItem(int player) throws IOException {
+        out.println("Choose a number: " + getChestItems()[0].toString() + getChestItems()[1].toString() +
+                " - or type 3 to return");
+        move = in.readLine();
+
+        switch (move) {
+            case "1" -> {
+                try{
+                    tryToUseAnItem(player-1, REDMUSHROOM);
+                    finishTurn();
+                }catch(AssertionError e){
+                    out.println(e.getMessage());
+                    chooseItem(player);
+                }
+            }
+            case "2" -> {
+                try{
+                    tryToUseAnItem(player-1, HONEYSYRUP);
+                    finishTurn();
+                }catch(AssertionError e){
+                    out.println(e.getMessage());
+                    chooseItem(player);
+                }
+            }
+            case "3" -> chooseMove();
+            default -> {
+                out.println("Invalid number!");
+                chooseItem(player);
+            }
+        }
+    }
+
+    /**
+     * Sets the outputStream.
+     *
+     * @param out outputStream to set.
+     */
+    public void setOut(PrintStream out){
+        this.out = out;
+    }
+
+    /**
+     * Gets the outputStream.
+     *
+     * @return the outputStream.
+     */
+    public PrintStream getOut(){
+        return out;
+    }
+
+    /**
+     * Runs the game until game is over.
+     *
+     * @throws IOException Exception thrown by .readLine() method located in chooseMove()
+     */
+    public void runGame() throws IOException {
+        while (notOver()){
+            if (phase.isPlayer()){
+                chooseMove();
+            }
+            else{
+                enemyTryToAttack();
+            }
+        }
+    }
+
+    /**
+     * Runs a specific game using a script including all moves done by players.
+     * It also sets a NullOutputStream to avoid prints on tests.
+     *
+     * @param script Script used to run the game.
+     * @throws IOException Exception thrown by .readLine() method located in runGame()
+     */
+    public void runGame(String script) throws IOException {
+        in = new BufferedReader(new StringReader(script));
+        out = new PrintStream(new NullOutputStream());
+        runGame();
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        GameController controller = new GameController();
+        controller.runGame("1\n1\n1\n1\n2\n2\n1\n1\n2\n1\n2\n2\n1\n1\n2\n1\n1\n2\n1\n2\n3\n4\n");
     }
 }

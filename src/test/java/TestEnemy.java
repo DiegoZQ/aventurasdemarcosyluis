@@ -31,11 +31,11 @@ public class TestEnemy{
     @Test
     public void spawnEnemyTest(){
         assertFalse(testGoomba.isDamaged());
-        assertEquals(1, testGoomba.getLvl());
+        assertEquals(0, testGoomba.getLvl());
         assertFalse(testSpiny.isDamaged());
-        assertEquals(1, testSpiny.getLvl());
+        assertEquals(0, testSpiny.getLvl());
         assertFalse(testBoo.isDamaged());
-        assertEquals(1, testBoo.getLvl());
+        assertEquals(0, testBoo.getLvl());
     }
 
     @Test

@@ -16,7 +16,7 @@ public final class Marcos extends AbstractPlayer{
      * Creates a Marcos.
      */
     private Marcos(){
-        super(80,5,200,4,1);
+        super(80,5,200,4,0);
     }
 
     public static Marcos getInstance(){
@@ -35,20 +35,7 @@ public final class Marcos extends AbstractPlayer{
     }
 
     /**
-     * Checks if Marcos can attack an Enemy.
-     *
-     * @param anEnemy Enemy to be attacked.
-     * @param anAttack Attack that Marcos can perform.
-     * @return true if Marcos has enough fp to perform the attack
-     *         and canAttack method from superclass is true;
-     *         false otherwise.
-     */
-    private boolean canAttack(IEnemy anEnemy, PlayerAttackType anAttack){
-        return super.canAttack(anEnemy) && this.hasEnoughFpToPerform(anAttack);
-    }
-
-    /**
-     * Checks if {@link #canAttack(IEnemy, PlayerAttackType)} is true.
+     * Checks if canAttack and hasEnoughFpToPerform are true.
      * If it is, then tries to hit the Enemy to lower its hit points and lose
      * an amount of fp equal to attack energy cost.
      *
@@ -56,7 +43,14 @@ public final class Marcos extends AbstractPlayer{
      * @param anAttack Attack that Marcos can perform.
      */
     public void attack(IEnemy anEnemy, PlayerAttackType anAttack){
-        if (this.canAttack(anEnemy, anAttack)){
+        if (!canAttack(anEnemy)){
+            throw new AssertionError("Enemy is KO!");
+        }
+        else if (!hasEnoughFpToPerform(anAttack)){
+            throw new AssertionError("You don't have enough energy!");
+
+        }
+        else{
             if (this.hit(anAttack)){
                 anEnemy.attackedByMarcos(this, anAttack);
             }

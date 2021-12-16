@@ -1,5 +1,6 @@
 import animantia.*;
 import game.GameController;
+import game.NullOutputStream;
 import interfaces.CanMove;
 import interfaces.Consumable;
 import items.HoneySyrup;
@@ -7,6 +8,8 @@ import items.RedMushroom;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import static animantia.PlayerAttackType.MARTILLO;
@@ -19,30 +22,20 @@ public class ControllerTest {
 
     private Marcos marcos;
     private Luis luis;
-    private Goomba goomba;
-    private Spiny spiny;
-    private Boo boo;
     private GameController controller;
 
     @BeforeEach
     public void setUp() {
-        controller= new GameController();
+        controller = new GameController();
+        controller.setOut(new PrintStream(new NullOutputStream()));
         marcos = controller.generateMarcos();
         luis = controller.generateLuis();
-        goomba = controller.generateGoomba();
-        spiny = controller.generateSpiny();
-        boo = controller.generateBoo();
-        controller.addEnemy(goomba);
-        controller.addEnemy(spiny);
-        controller.addEnemy(boo);
-        controller.setChest();
-        controller.addItem(REDMUSHROOM, 3);
-        controller.addItem(HONEYSYRUP, 3);
     }
 
     @AfterEach
     public void reset(){
         controller.resetPlayers();
+        controller.resetDifficulty();
     }
 
     @Test
@@ -59,70 +52,64 @@ public class ControllerTest {
     @Test
     public void listsTest(){
         List<CanMove> listOfPlayers = new ArrayList<>();
-        List<CanMove> listOfEnemies = new ArrayList<>();
-        List<CanMove> listOfCharacters = new ArrayList<>();
         listOfPlayers.add(marcos);
         listOfPlayers.add(luis);
-        listOfEnemies.add(goomba);
-        listOfEnemies.add(spiny);
-        listOfEnemies.add(boo);
-        listOfCharacters.addAll(listOfPlayers);
-        listOfCharacters.addAll(listOfEnemies);
         assertEquals(listOfPlayers,controller.getListOfPlayers());
-        assertEquals(listOfEnemies, controller.getListOfEnemies());
-        assertEquals(listOfCharacters, controller.getListOfCharacters());
+        assertEquals(3,controller.getListOfEnemies().size());
+        assertEquals(5,controller.getListOfCharacters().size());
+
     }
 
     @Test
     public void turnOwnerTest(){
         assertEquals(marcos,controller.getOwner());
-        controller.pass();
+        controller.finishTurn();
         assertEquals(luis,controller.getOwner());
-        controller.pass();
-        assertEquals(goomba,controller.getOwner());
-        controller.pass();
-        assertEquals(spiny,controller.getOwner());
-        controller.pass();
-        assertEquals(boo,controller.getOwner());
-        controller.pass();
+        controller.finishTurn();
+        controller.finishTurn();
+        controller.finishTurn();
+        controller.finishTurn();
         assertEquals(marcos,controller.getOwner());
     }
 
     @Test
     public void nextTurnOwnerTest(){
         assertEquals(luis,controller.getNextOwner());
-        controller.pass();
-        assertEquals(goomba,controller.getNextOwner());
-        controller.pass();
-        assertEquals(spiny,controller.getNextOwner());
-        controller.pass();
-        assertEquals(boo,controller.getNextOwner());
-        controller.pass();
+        controller.finishTurn();
+        controller.finishTurn();
+        controller.finishTurn();
+        controller.finishTurn();
         assertEquals(marcos,controller.getNextOwner());
-        controller.pass();
+        controller.finishTurn();
         assertEquals(luis,controller.getNextOwner());
     }
 
     @Test
     public void useItemTest(){
         controller.playerTryToAttack(1,SALTO);
+        assertTrue(marcos.isTired());
         controller.finishTurn();
         controller.playerTryToAttack(0,SALTO);
+        assertTrue(luis.isTired());
         controller.finishTurn();
         controller.enemyTryToAttack();
         controller.enemyTryToAttack();
         controller.enemyTryToAttack();
         controller.tryToUseAnItem(0,REDMUSHROOM);
+        assertEquals(2, controller.getChestItems()[0].getQuantity());
         controller.finishTurn();
-        controller.tryToUseAnItem(1,HONEYSYRUP);
+        controller.tryToUseAnItem(0,HONEYSYRUP);
+        assertEquals(2, controller.getChestItems()[1].getQuantity());
         controller.finishTurn();
     }
 
     @Test
     public void attackTest(){
         controller.playerTryToAttack(0, SALTO);
+        assertTrue(marcos.isTired());
         controller.finishTurn();
         controller.playerTryToAttack(1, MARTILLO);
+        assertTrue(luis.isTired());
         controller.finishTurn();
         controller.enemyTryToAttack();
         controller.enemyTryToAttack();
@@ -134,7 +121,19 @@ public class ControllerTest {
     }
 
     @Test
+    public void loseByPassTest(){
+        controller.pass();
+        controller.pass();
+        controller.enemyTryToAttack();
+        controller.enemyTryToAttack();
+        controller.enemyTryToAttack();
+        controller.pass();
+        assertFalse(controller.notOver());
+    }
+
+    @Test
     public void BattleTest(){
+        assertEquals(1,controller.getRound());
         controller.activePerfectPrecision();
         controller.playerTryToAttack(0, SALTO);
         controller.finishTurn();
@@ -145,7 +144,7 @@ public class ControllerTest {
         controller.enemyTryToAttack();
         controller.playerTryToAttack(1, MARTILLO);
         controller.finishTurn();
-        controller.playerTryToAttack(0, SALTO); //muere goomba
+        controller.playerTryToAttack(0, SALTO); //muere goomba no muere realmente wtf
         controller.finishTurn();
         controller.enemyTryToAttack(0);
         controller.enemyTryToAttack();
@@ -176,5 +175,23 @@ public class ControllerTest {
         controller.enemyTryToAttack();
         controller.playerTryToAttack(0, SALTO);
         controller.finishTurn();
+        assertTrue(controller.notOver());
+        assertEquals(2,controller.getRound());
     }
-}//529
+
+    @Test
+    public void runGame1() throws IOException {
+        controller.runGame("1\n1\n3\n2\n3\n3\n4\n");
+    }
+
+    @Test
+    public void runGame2() throws IOException {
+        controller.runGame("1\n1\n1\n1\n1\n1\n4\n");
+        controller.runGame("1\n1\n1\n1\n2\n2\n1\n1\n2\n1\n2\n2\n1\n1\n2\n1\n1\n2\n1\n2\n3\n4\n");
+    }
+
+    @Test
+    public void runGame3() throws IOException {
+        controller.runGame("1\n1\n1\n1\n2\n2\n1\n1\n2\n1\n2\n2\n1\n1\n2\n1\n1\n2\n1\n2\n3\n4\n");
+    }
+}//513

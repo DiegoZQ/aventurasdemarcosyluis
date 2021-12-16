@@ -27,6 +27,22 @@ public class TestPlayerAttack{
     }
 
     @Test
+    public void energyTest(){
+        testGoomba = new Goomba();
+        testMarcos.attack(testGoomba, MARTILLO);
+        testMarcos.attack(testGoomba, MARTILLO);
+        assertThrows(AssertionError.class,
+                () -> testMarcos.attack(testGoomba, MARTILLO));
+        testGoomba = new Goomba();
+        testLuis.attack(testGoomba, MARTILLO);
+        testLuis.attack(testGoomba, MARTILLO);
+        testGoomba = new Goomba();
+        assertThrows(AssertionError.class,
+                () -> testLuis.attack(testGoomba, MARTILLO));
+
+    }
+
+    @Test
     public void attackGoombaWithSALTO(){
         testGoomba = new Goomba();
         testMarcos.attack(testGoomba, SALTO);

@@ -17,4 +17,4 @@ public class AbstractPhase {
     public void setController(GameController controller) {
         this.controller = controller;
     }
-}//780
+}//1006

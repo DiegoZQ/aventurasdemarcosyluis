@@ -17,7 +17,7 @@ public final class Spiny extends AbstractEnemy implements AttackableByLuis {
      * Creates a Spiny.
      */
     public Spiny() {
-        super(80, 4, 125, 1);
+        super(80, 4, 125);
     }
 
     /**

@@ -2,6 +2,8 @@ import animantia.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static animantia.PlayerAttackType.MARTILLO;
 import static animantia.PlayerAttackType.SALTO;
 import static items.ItemEnum.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +32,8 @@ public class TestItem{
     @Test
     public void tryToUseUnavailableItemTest(){
         testLuis.attack(testGoomba, SALTO);
-        testLuis.use(HONEYSYRUP);
+        assertThrows(AssertionError.class,
+                () -> testLuis.use(HONEYSYRUP));
         assertTrue(testLuis.isTired());
     }
 
@@ -38,7 +41,8 @@ public class TestItem{
     public void tryToUseItemWhenKO(){
         testLuis.setKO();
         AbstractPlayer.add(REDMUSHROOM);
-        testLuis.use(REDMUSHROOM);
+        assertThrows(AssertionError.class,
+                () -> testLuis.use(REDMUSHROOM));
         assertTrue(testLuis.isKO());
     }
 

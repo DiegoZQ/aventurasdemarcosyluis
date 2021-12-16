@@ -113,6 +113,7 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
         }
     }
 
+    @Override
     public boolean isTired(){
         return this.getFp() < this.getMaxFp();
     }
@@ -149,7 +150,7 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     /**
      * Increases every stat of the Player and sets its hp and fp up to its maximum available.
      */
-    private void levelUp(){
+    public void levelUp(){
         this.setAtk((int)(this.getAtk() * 1.15));
         this.setDef((int)(this.getDef() * 1.15));
         this.setHpMax((int)(this.getMaxHp() * 1.15));
@@ -189,28 +190,6 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
     }
 
     /**
-     * Checks if the user can use a specific item.
-     *
-     * @param anItem Item to be used.
-     * @return true if the user isn't KO and the item is available;
-     *         false otherwise.
-     */
-    public boolean canUse(Consumable anItem){
-        return !this.isKO() && anItem.isAvailable();
-    }
-
-    /**
-     * Checks if the user can use a specific item on a specific target.
-     *
-     * @param anItem Item to be used.
-     * @return true if {@link #canUse(Consumable)} is true and the target isn't KO;
-     *         false otherwise.
-     */
-    public boolean canUse(Consumable anItem, IPlayer target){
-        return this.canUse(anItem) && !target.isKO();
-    }
-
-    /**
      * Consumes an Item from Players inventory (if it's available)
      * and give its effects to itself.
      *
@@ -220,8 +199,15 @@ public abstract class AbstractPlayer extends AbstractAnimantia implements IPlaye
         this.use(this,anItem);
     }
 
+    @Override
     public void use(IPlayer target, ItemEnum anItem) {
-        if (this.canUse(chest.get(anItem), target)) {
+        if (!chest.get(anItem).isAvailable()) {
+            throw new AssertionError("Not available!");
+        }
+        else if (target.isKO()){
+            throw new AssertionError("Player is KO!");
+        }
+        else{
             chest.get(anItem).consume();
             chest.get(anItem).giveEffect(target);
         }

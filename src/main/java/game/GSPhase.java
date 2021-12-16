@@ -24,10 +24,10 @@ public class GSPhase extends Phase{
      */
     @Override
     public void attack(int targetIndex){
-        AttackableByLuis attacker = (AttackableByLuis)controller.getOwner();
+        AttackableByLuis attacker = getOwner();
         IPlayer attacked = controller.getListOfPlayers().get(targetIndex);
         attacker.attack(attacked);
-        System.out.println(verboseAttack(attacker, attacked));
+        controller.getOut().println(verboseAttack(attacker, attacked));
     }
 
     /**
@@ -48,5 +48,10 @@ public class GSPhase extends Phase{
     @Override
     public int getSize(){
         return controller.getListOfGSs().size();
+    }
+
+    @Override
+    public AttackableByLuis getOwner(){
+        return controller.getListOfGSs().get(controller.getPhaseTurn());
     }
 }

@@ -15,9 +15,9 @@ public class BooPhase extends Phase{
      */
     @Override
     public void attack(){
-        Boo attacker = (Boo)controller.getOwner();
+        Boo attacker = getOwner();
         attacker.attack(Luis.getInstance());
-        System.out.println(verboseAttack(attacker, Luis.getInstance()));
+        controller.getOut().println(verboseAttack(attacker, Luis.getInstance()));
     }
 
     /**
@@ -38,5 +38,10 @@ public class BooPhase extends Phase{
     @Override
     public int getSize(){
         return controller.getListOfBoos().size();
+    }
+
+    @Override
+    public Boo getOwner(){
+        return controller.getListOfBoos().get(controller.getPhaseTurn());
     }
 }

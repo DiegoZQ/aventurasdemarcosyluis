@@ -15,7 +15,7 @@ public final class Goomba extends AbstractEnemy implements AttackableByLuis {
      * Creates a Goomba.
      */
     public Goomba() {
-        super(80,3,100,1);
+        super(80,3,100);
     }
 
     @Override

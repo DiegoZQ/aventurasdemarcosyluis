@@ -16,7 +16,7 @@ public final class Boo extends AbstractEnemy {
      * Creates a Boo.
      */
     public Boo() {
-        super(100,2,75,1);
+        super(100,2,75);
     }
 
     /**

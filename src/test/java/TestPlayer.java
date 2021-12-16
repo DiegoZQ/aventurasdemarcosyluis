@@ -2,6 +2,8 @@ import animantia.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static animantia.PlayerAttackType.MARTILLO;
 import static animantia.PlayerAttackType.SALTO;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,8 +33,8 @@ public class TestPlayer{
         assertFalse(testMarcos.isDamaged());
         assertFalse(testLuis.isTired());
         assertFalse(testLuis.isDamaged());
-        assertEquals(1, testMarcos.getLvl());
-        assertEquals(1,testLuis.getLvl());
+        assertEquals(0, testMarcos.getLvl());
+        assertEquals(0,testLuis.getLvl());
     }
 
     @Test
@@ -49,8 +51,10 @@ public class TestPlayer{
     public void cantAttackWhenKO(){
         testMarcos.setKO();
         testLuis.setKO();
-        testMarcos.attack(testGoomba, SALTO);
-        testLuis.attack(testGoomba, SALTO);
+        assertThrows(AssertionError.class,
+                () -> testMarcos.attack(testGoomba, SALTO));
+        assertThrows(AssertionError.class,
+                () -> testLuis.attack(testGoomba, SALTO));
         assertFalse(testGoomba.isDamaged());
     }
 }

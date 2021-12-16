@@ -3,6 +3,9 @@ package game;
 import interfaces.*;
 import items.ItemEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * PlayersPhase is the superclass of all player phases. It has specific methods
  * that share all phases of this type.
@@ -21,9 +24,9 @@ public class PlayersPhase extends Phase {
      */
     @Override
     public void use(int targetIndex, ItemEnum anItem){
-        IPlayer player = (IPlayer) controller.getOwner();
+        IPlayer player = getOwner();
         player.use(controller.getListOfPlayers().get(targetIndex), anItem);
-        System.out.println(verboseUse(player, controller.getListOfPlayers().get(targetIndex), anItem));
+        controller.getOut().println(verboseUse(player, controller.getListOfPlayers().get(targetIndex), anItem));
     }
 
     /**
@@ -35,8 +38,28 @@ public class PlayersPhase extends Phase {
      */
     public String verboseUse(CanMove user, CanMove target, ItemEnum anItem){
         if (user.equals(target)){
-            return user.toString() + " used a " + anItem.toString() + " on himself";
+            return user + " used a " + anItem.toString() + " on himself";
         }
-        return user.toString() + " used a " + anItem.toString() + " on " + target.toString();
+        return user + " used a " + anItem.toString() + " on " + target.toString();
+    }
+
+    @Override
+    public IPlayer getOwner(){
+        return controller.getListOfPlayers().get(controller.getTurn());
+    }
+
+    /**
+     * Gets the list of enemies that this player can attack with their indexes.
+     *
+     * @return list of targets.
+     */
+    @Override
+    public Lista<IEnemy> getListOfTargets(){
+        return controller.getListOfEnemies();
+    }
+
+    @Override
+    public boolean isPlayer(){
+        return true;
     }
 }

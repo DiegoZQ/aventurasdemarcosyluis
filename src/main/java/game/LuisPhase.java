@@ -3,6 +3,7 @@ package game;
 import animantia.Luis;
 import animantia.PlayerAttackType;
 import interfaces.AttackableByLuis;
+import interfaces.IEnemy;
 
 /**
  * LuisPhase is the phase used when the controller owner is Luis.
@@ -20,12 +21,11 @@ public class LuisPhase extends PlayersPhase{
      */
     @Override
     public void attack(int targetIndex, PlayerAttackType anAttack){
-        Luis attacker = (Luis) controller.getOwner();
+        Luis attacker = Luis.getInstance();
         AttackableByLuis attacked = controller.getListOfGSs().get(targetIndex);
         attacker.attack(attacked, anAttack);
-        System.out.println(verboseAttack(attacker, attacked));
-        if (attacked.isKO()){
-            controller.getListOfGSs().remove(targetIndex);
+        controller.getOut().println(verboseAttack(attacker, attacked));
+        if (attacked.isKO()){controller.getListOfGSs().remove(targetIndex);
         }
     }
 
@@ -37,5 +37,10 @@ public class LuisPhase extends PlayersPhase{
     @Override
     public boolean exists(){
         return Luis.isAlive();
+    }
+
+    @Override
+    public Lista<IEnemy> getListOfTargets() {
+        return new Lista<>(controller.getListOfGSs());
     }
 }
