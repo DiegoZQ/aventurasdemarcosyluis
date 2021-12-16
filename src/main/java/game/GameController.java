@@ -723,10 +723,4 @@ public class GameController {
         out = new PrintStream(new NullOutputStream());
         runGame();
     }
-
-
-    public static void main(String[] args) throws IOException {
-        GameController controller = new GameController();
-        controller.runGame("1\n1\n1\n1\n2\n2\n1\n1\n2\n1\n2\n2\n1\n1\n2\n1\n1\n2\n1\n2\n3\n4\n");
-    }
 }
