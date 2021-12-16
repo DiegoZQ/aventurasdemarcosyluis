@@ -1,10 +1,13 @@
 # Aventuras de Marcos y Luis
 Este programa contiene las carpetas necesarias para hacer
-funcionar ciertas características del juego "Las Flipantes 
-Aventuras de Marcos & Luis". Entre las cuales destacan, un sistema de subida de niveles, 
-ataques, instanciación de Jugadores y Enemigos, y finalmente, un pequeño combate entre jugadores
-y enemigos haciendo uso de un controlador y unos prints para ir viendo más detalladamente cómo
-se desenvuelven los personajes en batalla.
+funcionar el juego llamado "Las Flipantes 
+Aventuras de Marcos & Luis". Entre las características que componen el juego, destacan, un sistema de subida de niveles, 
+dos tipos de ataques para los jugadores y uno para los enemigos,
+ambos con sus respectivos stats, instanciación de Jugadores y Enemigos, un sistema de rondas, con turnos incluidos,
+para que los jugadores y los enemigos peleen, dando la oportunidad de que los jugadores puedan elegir
+entre varias alternativas qué hacer en cada turno, mientras que los enemigos solo atacan. Todo esto
+haciendo uso de un controlador, unas clases auxiliares del controlador y unos prints para ir viendo más detalladamente cómo
+se desenvuelven los personajes en batalla (dichos prints hacen el papel de una interfaz gráfica no implementada).
 
 La carpeta animantia contiene todo lo que vendrían a ser
 los objetos "vivos" capaces de interactuar con el resto
@@ -19,11 +22,11 @@ que podrán ir consiguiéndose y utilizándose a lo largo del juego
 de forma limitada. Además de esto, posee un campo
 llamado FP usado para limitar la cantidad de ataques
 que puede usar los jugadores por ronda, y un mecanismo de subida de niveles cada 
-vez que se avanza a una nueva ronda (actualmente solo se dispone de una ronda jugable);
+vez que se avanza a una nueva ronda;
 mientras que en la clase AbstractEnemy tenemos la variable estática power
 que es usada para determinar el nivel y estadísticas
 que tendrá el siguiente enemigo generado en alguna de las subclases de
-AbstractEnemy; esto con la finalidad de que el nivel de los
+AbstractEnemy (Goomba, Boo o Spiny); esto con la finalidad de que el nivel de los
 enemigos vaya incrementándose a la par del nivel de los jugadores,
 lo que hará que el juego nunca sea, o demasiado fácil o demasiado
 difícil para el usuario conforme avance el juego.
@@ -40,21 +43,23 @@ Dentro de AbstractEnemy tenemos a tres enemigos principales, Goomba, Spiny y Boo
 mediante subclases de AbstractEnemy. Goomba es el enemigo básico por defecto pues no se caracteriza en nada,
 ataca tanto a Marcos como a Boo de manera aleatoria y puede ser herido por ambos y con cualquier ataque,
 mientras que Spiny, un enemigo centrado en la defensa, puede también atacar a ambos jugadores, pero
-este solo puede ser herido por un ataque tipo MARTILLO, independiente del jugador que efectue el ataque; 
+este solo puede ser herido por un ataque tipo MARTILLO, independiente del jugador que efectúe el ataque; 
 finalmente Boo es el enemigo centrado en ataque, el cual solo puede ser herido por Marcos, y solo ataca
 a Luis.
 
 La carpeta game contiene todo lo que vendría a ser el controlador del juego y clases auxiliares, las cuales
-lo ayudan a distribuirse las tareas. El controlador es el encargado de manejar un combate (solo uno de momento)
+lo ayudan a distribuirse las tareas. El controlador es el encargado de manejar un juego (con 5 rondas incluidas)
 entre jugadores y enemigos, con sus respectivas particularidades a la hora de atacar o ser atacado dependiendo
 del jugador o enemigo en cuestión, este tiene implementado un sistema de turnos que se maneja con una lista
 de todos los personajes con vida y un índice que lo recorre, además de esto hay una serie de fases
 definidas para cada personaje en particular, excepto goomba y spiny, que fueron incluidos en la misma fase,
 puesto que sus métodos para interactuar en combate son exactamente los mismos, en cada fase se procede a tomar
-un personaje de una lista genérica que contiene ta todos los personajes y castearlo en su tipo correspondiente,
-dicho casteo jamás generará errores, pues gracias a una clase llamada phases, sabemos que cada vez que un 
-personaje cambie de turno, el siguiente será asignado a la fase correspondiente según su tipo.
-Entre las acciones que pueden efectar los jugadores en el combate, tenemos el pasar de turno (no hace nada),
+un personaje de una lista genérica que contiene ta todos los personajes y obtener su tipo correspondiente,
+usando un campo de phaseTurn y listas de la fase en cuestión, esto con el fin de obtener el turnOwner
+evitando hacer uso de casting. El juego contiene un total de 5 rondas jugables, con dificultad ascendente, y
+se detiene automáticamente cuando ambos jugadores quedan KO, lo que resulta una derrota para los jugadores, o en su
+defecto, los jugadores llegan a la ronda 5 y la ganan, concluyendo así el juego.
+Entre las acciones que pueden efectuar los jugadores en el combate, tenemos el pasar de turno (no hace nada),
 usar un objeto (una REDMUSHROOM para recuperar hp o HONEYSYRUP para recuperar fp) en sí mismo o
 su aliado, o decidir atacar a un enemigo dando el índice del enemigo en cuestión en una lista que
 se genera en el momento de todos los enemigos que puede atacar el personaje que es dueño del turno,

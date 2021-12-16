@@ -26,4 +26,9 @@ public final class HoneySyrup extends AbstractItem{
     public void giveEffect(IPlayer aPlayer){
         aPlayer.receiveFp(3);
     }
+
+    @Override
+    public String toString(){
+        return " [2] HoneySyrup; " + super.toString();
+    }
 }

@@ -17,7 +17,7 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
      * Creates a Luis.
      */
     private Luis(){
-        super(130,3,150,4,1);
+        super(130,3,150,4,0);
     }
 
     public static Luis getInstance(){
@@ -40,21 +40,9 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
         this.receiveDamage(0.75 * aBoo.getAtk() / this.getDef());
     }
 
-    /**
-     * Checks if Luis can attack an Enemy.
-     *
-     * @param anEnemy Enemy to be attacked.
-     * @param anAttack Attack that Luis can perform.
-     * @return true if Luis has enough fp to perform the attack
-     *         and canAttack method from superclass is true;
-     *         false otherwise.
-     */
-    private boolean canAttack(AttackableByLuis anEnemy, PlayerAttackType anAttack){
-        return super.canAttack(anEnemy) && this.hasEnoughFpToPerform(anAttack);
-    }
 
     /**
-     * Checks if {@link #canAttack(AttackableByLuis, PlayerAttackType)} is true.
+     * Checks if canAttack and hasEnoughFpToPerform are true.
      * If it is, then tries to hit the Enemy to lower its hit points and lose
      * an amount of fp equal to attack energy cost.
      *
@@ -62,7 +50,14 @@ public final class Luis extends AbstractPlayer implements AttackableByBoo{
      * @param anAttack Attack that Luis can perform.
      */
     public void attack(AttackableByLuis anEnemy, PlayerAttackType anAttack){
-        if (this.canAttack(anEnemy, anAttack)){
+        if (!canAttack(anEnemy)){
+            throw new AssertionError("Enemy is KO!");
+        }
+        else if (!hasEnoughFpToPerform(anAttack)){
+            throw new AssertionError("You don't have enough energy!");
+
+        }
+        else{
             if (this.hit(anAttack)){
                 anEnemy.attackedByLuis(this, anAttack);
             }

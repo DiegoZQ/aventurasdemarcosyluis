@@ -131,6 +131,7 @@ public abstract class AbstractAnimantia implements CanMove {
         this.lvl = LVL;
     }
 
+    @Override
     public boolean isDamaged(){
         return this.getHp() < this.getMaxHp();
     }
@@ -167,7 +168,6 @@ public abstract class AbstractAnimantia implements CanMove {
         return !this.isKO() && !anAttacked.isKO();
     }
 
-
     /**
      * Converts into a string some specific stats like hp and lvl.
      *
@@ -177,4 +177,4 @@ public abstract class AbstractAnimantia implements CanMove {
     public String toString(){
         return "lvl: " + this.getLvl() + " HP: " + this.getHp() + "/"  + this.getMaxHp();
     }
-}//984-2114-2643
+}//985-2356-2869

@@ -26,4 +26,9 @@ public final class RedMushroom extends AbstractItem{
     public void giveEffect(IPlayer aPlayer){
         aPlayer.receiveHp(aPlayer.getMaxHpPercentage(10));
     }
+
+    @Override
+    public String toString(){
+        return " [1] RedMushroom; " + super.toString();
+    }
 }

@@ -4,6 +4,14 @@ import animantia.PlayerAttackType;
 import interfaces.CanMove;
 import items.ItemEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Phase is the superclass of every phase used by gameController in a battle.
+ *
+ * @author Diego Zuniga.
+ */
 public class Phase extends AbstractPhase {
 
     /**
@@ -59,6 +67,15 @@ public class Phase extends AbstractPhase {
     }
 
     /**
+     * Gets the turn owner using the controller.
+     *
+     * @return the owner.
+     */
+    public CanMove getOwner(){
+        return controller.getOwner();
+    }
+
+    /**
      * Checks if the specific list has elements.
      *
      * @return true (by default).
@@ -76,5 +93,25 @@ public class Phase extends AbstractPhase {
      */
     public String verboseAttack(CanMove attacker, CanMove attacked){
         return attacker.toString() + " attacked " + attacked.toString();
+    }
+
+    /**
+     * Gets the list of targets that this owner can attack.
+     *
+     * @return list of targets.
+     */
+    public Lista<? extends CanMove> getListOfTargets(){
+        return null;
+    }
+
+
+    /**
+     * Checks if the turn owner is a player or not.
+     *
+     * @return true if yes;
+     *         false if not.
+     */
+    public boolean isPlayer(){
+        return false;
     }
 }

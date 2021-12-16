@@ -34,4 +34,11 @@ public interface Consumable{
      * @param aPlayer who gets the effect.
      */
     void giveEffect(IPlayer aPlayer);
+
+    /**
+     * Gets the item quantity.
+     *
+     * @return quantity.
+     */
+    int getQuantity();
 }

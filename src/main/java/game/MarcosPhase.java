@@ -20,10 +20,10 @@ public class MarcosPhase extends PlayersPhase {
      */
     @Override
     public void attack(int targetIndex, PlayerAttackType anAttack){
-        Marcos attacker = (Marcos) controller.getOwner();
+        Marcos attacker = Marcos.getInstance();
         IEnemy attacked = controller.getListOfEnemies().get(targetIndex);
         attacker.attack(attacked, anAttack);
-        System.out.println(verboseAttack(attacker, attacked));
+        controller.getOut().println(verboseAttack(attacker, attacked));
         if (attacked.isKO()){
             if (targetIndex + 1 <= controller.getListOfGSs().size()){
                 controller.getListOfGSs().remove(targetIndex);
